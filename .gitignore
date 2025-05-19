@@ -1,0 +1,15 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/ProgettoStudio
+/Engine/bin/Debug
+/Engine/obj/Debug
+/Entity/bin/Debug
+/Entity/obj/Debug
+/IDal/bin/Debug
+/IDal/obj/Debug
+/ProgettoStudio/bin/Debug
+/ProgettoStudio/obj/Debug
+/XmlDal/bin/Debug
+/XmlDal/obj/Debug
