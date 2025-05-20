@@ -1,4 +1,5 @@
-﻿using Entity;
+﻿using Engine;
+using Entity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,9 +16,9 @@ namespace ProgettoStudio
     public partial class FrmElenco : Form
     {
 
-        Func<IEnumerable> RefreshDelegate { get; set; }
+        public Func<IEnumerable<EntityBase>> RefreshDelegate { get; set; }
 
-        Action<EntityBase> EditDelegate { get; set; }
+        public Action<EntityBase> EditDelegate { get; set; }
 
         public FrmElenco()
         {
@@ -36,7 +37,6 @@ namespace ProgettoStudio
             }
 
             dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
-
         }
 
         private void NewButton_Click(object sender, EventArgs e)
@@ -53,23 +53,15 @@ namespace ProgettoStudio
                 var row = grid.Rows[e.RowIndex];
                 var item = row.DataBoundItem;
 
+                if (item is AreeEntity areeEntity)
+                {
+                    FrmAree area = new FrmAree();
+
+                    area.ShowModal(areeEntity);
+                }
             }
-
-
-            this.ShowDialog();
-
         }
 
-
-
-
-        private void ShowModal()
-        { 
-            
-        
-        
-        
-        }
 
     }
 }

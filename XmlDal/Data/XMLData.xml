@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+	<Aree>
+		<Area Codice="NO" Descrizione="Nord Ovest" />
+		<Area Codice="NE" Descrizione="Nord Est" />
+		<Area Codice="SUD" Descrizione="Sud" />
+		<Area Codice="CENTRO" Descrizione="Sud" />
+	</Aree>
+	<Anagrafiche>
+		<Anagrafica IdAnagrafica="1" RagioneSociale="Azzari S.r.l" PartitaIva="00355650102" Indirizzo="Via G. Puccini, 4547r" Telefono="0106509098" >
+			<Riferimento Cognome="Antonelli" Nome="Marcello" Telefono="3358954789" />
+			<Riferimento Cognome="Calosso" Nome="Antonio" Telefono="" />
+			<Riferimento Cognome="Landa" Nome="Michelangelo" Telefono="" />
+		</Anagrafica>
+		<Anagrafica IdAnagrafica="2" RagioneSociale="Bici store" PartitaIva="41980498044498" Indirizzo="Via firenze"
+	   Telefono="" >
+			<Riferimento Cognome="Lando" Nome="Luca" Telefono="" />
+		</Anagrafica>
+		<Anagrafica IdAnagrafica="3" RagioneSociale="Bonin S.r.l" PartitaIva="00867920282" Indirizzo="1, V. Portogallo"
+	   Telefono="0498702080" >
+			<Riferimento Cognome="Merlo" Nome="Massimiliano" Telefono="0498702080" />
+			<Riferimento Cognome="Merello" Nome="Luca" Telefono="0498702080" />
+		</Anagrafica>
+		<Anagrafica IdAnagrafica="4" RagioneSociale="Cocchi Cicli S.r.l" PartitaIva="02957540103" Indirizzo="Via Pisacane 81/R" Telefono="0105558700" >
+			<Riferimento Cognome="De Luca" Nome="Simone" Telefono="0105558701" />
+			<Riferimento Cognome="Benedetti" Nome="Lucia" Telefono="0105558702" />
+		</Anagrafica>
+	</Anagrafiche>
+</Root>
+

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XmlDal
+namespace Entity
 {
-    public class Class1
+    public abstract class EntityBase : BindableEntity
     {
+        protected abstract bool IsValid();
+
     }
 }

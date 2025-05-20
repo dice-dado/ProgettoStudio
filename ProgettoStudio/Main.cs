@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Engine;
+using Entity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,5 +18,35 @@ namespace ProgettoStudio
         {
             InitializeComponent();
         }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            button1.Click += button1_Click;
+            //button2.Click += button2_Click;
+
+        }
+
+        public void button1_Click(object sender, EventArgs e)
+        {
+            FrmElenco elenco = new FrmElenco();
+
+            EngineBase<AreeEntity> engine = new EngineBase<AreeEntity>();
+
+            elenco.RefreshDelegate += engine.ReadAll;            
+            elenco.EditDelegate += (EntityBase pk) => 
+            { 
+                engine.Read(pk);  
+                
+            };
+            
+            elenco.ShowDialog();
+        }
+
+
+
+
+
     }
 }

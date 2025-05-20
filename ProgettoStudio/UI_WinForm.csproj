@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrmAree.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAree.Designer.cs">
+      <DependentUpon>FrmAree.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +66,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FrmAree.resx">
+      <DependentUpon>FrmAree.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -89,6 +98,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.csproj">
+      <Project>{52E19872-61DE-49CF-B2A6-605E901B2464}</Project>
+      <Name>Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Entity\Entity.csproj">
       <Project>{A93EDF4C-D4D0-4230-B99F-2839B72BC7B1}</Project>
       <Name>Entity</Name>
