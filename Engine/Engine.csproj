@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnagraficheEngine.cs" />
+    <Compile Include="AreeEngine.cs" />
     <Compile Include="DALFactory.cs" />
     <Compile Include="EngineBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

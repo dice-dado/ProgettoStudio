@@ -33,13 +33,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
-            // button1
+            // newButton
             // 
             this.newButton.Location = new System.Drawing.Point(12, 12);
-            this.newButton.Name = "button1";
+            this.newButton.Name = "newButton";
             this.newButton.Size = new System.Drawing.Size(75, 23);
             this.newButton.TabIndex = 0;
-            this.newButton.Text = "button1";
+            this.newButton.Text = "New";
             this.newButton.UseVisualStyleBackColor = true;
             this.newButton.Click += new System.EventHandler(this.NewButton_Click);
             // 

@@ -8,7 +8,7 @@ namespace Entity
 {
     public abstract class EntityBase : BindableEntity
     {
-        protected abstract bool IsValid();
+        public abstract bool IsValid();
 
     }
 }

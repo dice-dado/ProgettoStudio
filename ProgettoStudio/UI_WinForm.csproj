@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrmAnagrafiche.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmAnagrafiche.Designer.cs">
+      <DependentUpon>FrmAnagrafiche.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmAree.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,6 +72,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FrmAnagrafiche.resx">
+      <DependentUpon>FrmAnagrafiche.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmAree.resx">
       <DependentUpon>FrmAree.cs</DependentUpon>
     </EmbeddedResource>

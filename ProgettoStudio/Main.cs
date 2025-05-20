@@ -23,31 +23,50 @@ namespace ProgettoStudio
         {
             base.OnLoad(e);
 
-            areeButton.Click += aree_Click;
-            //button2.Click += button2_Click;
+            areeButton.Click += Aree_Click;
+            anagraficheButton.Click += Anagrafiche_Click;
 
         }
 
-        public void aree_Click(object sender, EventArgs e)
+        public void Aree_Click(object sender, EventArgs e)
         {
-            FrmElenco elenco = new FrmElenco();
+            FrmElenco frmElenco = new FrmElenco();
 
-            EngineBase<AreeEntity> engine = new EngineBase<AreeEntity>();
+            AreeEngine engine = new AreeEngine();
 
-            elenco.RefreshDelegate += engine.ReadAll;            
-            elenco.EditDelegate += (EntityBase entity) => 
+            frmElenco.RefreshDelegate += engine.ReadAll;            
+            frmElenco.EditDelegate += (EntityBase entity) => 
             {                                
                 FrmAree area = new FrmAree();
 
+                area.FormClosed += (s, args) =>
+                {
+                  frmElenco.RefreshDelegate.Invoke();
+                };
                 area.ShowModal((AreeEntity)entity);                
-            };
-            
-            elenco.ShowDialog();
+            };            
+            frmElenco.ShowDialog();
         }
 
+        public void Anagrafiche_Click(object sender, EventArgs e)
+        {
+            FrmElenco frmElenco = new FrmElenco();
 
+            AnagraficheEngine engine = new AnagraficheEngine();
 
+            frmElenco.RefreshDelegate += engine.ReadAll;            
+            frmElenco.EditDelegate += (EntityBase entity) => 
+            {                                
+                FrmAnagrafiche area = new FrmAnagrafiche();
 
-
+                area.FormClosed += (s, args) =>
+                {
+                  frmElenco.RefreshDelegate.Invoke();
+                };
+                area.ShowModal((AnagraficaEntity)entity);                
+            };            
+            frmElenco.ShowDialog();
+        }
+         
     }
 }

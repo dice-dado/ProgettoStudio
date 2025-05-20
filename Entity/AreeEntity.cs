@@ -7,12 +7,7 @@ using System.Threading.Tasks;
 namespace Entity
 {
     public class AreeEntity : EntityBase
-    {
-        protected override bool IsValid()
-        {
-            throw new NotImplementedException();
-        }
-
+    {        
         private string mCodice;
         public string Codice 
         {
@@ -43,6 +38,9 @@ namespace Entity
         
         }
 
-
+        public override bool IsValid()
+        {
+            return true;
+        }
     }
 }

@@ -23,6 +23,8 @@ namespace ProgettoStudio
         public FrmElenco()
         {
             InitializeComponent();
+
+            RefreshDelegate += () => { dataGridView.Refresh(); return null; };
         }
 
         protected override void OnLoad(EventArgs e)
@@ -38,6 +40,8 @@ namespace ProgettoStudio
 
             dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
         }
+
+         
 
         private void NewButton_Click(object sender, EventArgs e)
         {

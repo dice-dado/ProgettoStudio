@@ -16,8 +16,7 @@
 	   Telefono="" >
 			<Riferimento Cognome="Lando" Nome="Luca" Telefono="" />
 		</Anagrafica>
-		<Anagrafica IdAnagrafica="3" RagioneSociale="Bonin S.r.l" PartitaIva="00867920282" Indirizzo="1, V. Portogallo"
-	   Telefono="0498702080" >
+		<Anagrafica IdAnagrafica="3" RagioneSociale="Bonin S.r.l" PartitaIva="00867920282" Indirizzo="1, V. Portogallo" Telefono="0498702080" >
 			<Riferimento Cognome="Merlo" Nome="Massimiliano" Telefono="0498702080" />
 			<Riferimento Cognome="Merello" Nome="Luca" Telefono="0498702080" />
 		</Anagrafica>

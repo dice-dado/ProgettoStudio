@@ -8,44 +8,35 @@ using System.Xml.Linq;
 
 namespace Engine
 {
-    public class EngineBase<T> where T : EntityBase
+    public abstract class EngineBase 
     {
-        public T Read()
+        public virtual EntityBase Read()
+        {         
+            return default; 
+        }
+        public abstract EntityBase Read(object pkValue);
+        public abstract IEnumerable<EntityBase> ReadAll();        
+        public virtual List<string> Update(EntityBase entity)
         {
-            T result = default(T);
+            var errorList = new List<string>();
+            
+            errorList.AddRange(CheckUpdate(entity));
 
-            return result;
+            if (errorList.Count==0)
+            {
+                if (entity.IsValid())
+                {
+                    var dataLayer = DALFactory.Create();
+
+                    dataLayer.Update(entity);
+                }
+                else
+                    errorList.Add("IsValid() error");
+            }
+
+            return errorList;
         }
-        public T Read(object pkValue)
-        {
-            T result = default(T);
-
-            return result;
-        }
-
-
-        public IEnumerable<T> ReadAll()
-        {
-            IEnumerable<T> result = Enumerable.Empty<T>();
-
-            var dataLayer = DALFactory.Create();
-
-            return dataLayer.ReadAll<T>();
-        }
-
-        public List<string> Update(EntityBase entity)
-        {
-            var dataLayer = DALFactory.Create();
-
-            dataLayer.Update(entity);
-
-            return new List<string>();
-        }
-
-        public List<string> CheckUpdate(EntityBase entity)
-        { 
-            return new List<string>();
-        }
+        public abstract List<string> CheckUpdate(EntityBase entity);        
 
     }
 }
