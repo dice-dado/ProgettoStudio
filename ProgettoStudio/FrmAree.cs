@@ -18,6 +18,12 @@ namespace ProgettoStudio
             InitializeComponent();
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+
+            saveButton.Click += SaveButton_Click;
+        }
 
         public void ShowModal(AreeEntity entity)
         { 
@@ -26,6 +32,15 @@ namespace ProgettoStudio
 
             this.ShowDialog();
         }
+
+        private void SaveButton_Click(object sender, EventArgs e)     
+        { 
+            
+        
+        
+        }
+
+
 
     }
 }

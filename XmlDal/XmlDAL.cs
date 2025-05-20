@@ -64,7 +64,28 @@ namespace XmlDal
 
         public List<string> Update(EntityBase entity)
         {
-            throw new NotImplementedException();
+            var list = new List<string>();
+
+            if (entity is AreeEntity areeEntity)
+            {
+                List<AreeEntity> areeEntities = new List<AreeEntity>();
+                var aree = mDoc.Root.Element("Aree")?.Elements("Area");
+
+                if (aree != null)
+                {
+                    foreach (var area in aree)
+                    {
+                        string codice = area.Attribute("Codice")?.Value;
+                        if (codice == areeEntity.Codice)
+                            area.SetAttributeValue("Descrizione", areeEntity.Descrizione);
+                    }
+                }
+
+                mDoc.Save("path.xml");
+                return list;
+
+            }
+            else return list;
         }
     }
 }

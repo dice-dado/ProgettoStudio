@@ -23,22 +23,23 @@ namespace ProgettoStudio
         {
             base.OnLoad(e);
 
-            button1.Click += button1_Click;
+            areeButton.Click += aree_Click;
             //button2.Click += button2_Click;
 
         }
 
-        public void button1_Click(object sender, EventArgs e)
+        public void aree_Click(object sender, EventArgs e)
         {
             FrmElenco elenco = new FrmElenco();
 
             EngineBase<AreeEntity> engine = new EngineBase<AreeEntity>();
 
             elenco.RefreshDelegate += engine.ReadAll;            
-            elenco.EditDelegate += (EntityBase pk) => 
-            { 
-                engine.Read(pk);  
-                
+            elenco.EditDelegate += (EntityBase entity) => 
+            {                                
+                FrmAree area = new FrmAree();
+
+                area.ShowModal((AreeEntity)entity);                
             };
             
             elenco.ShowDialog();

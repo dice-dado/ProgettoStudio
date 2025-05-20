@@ -52,14 +52,11 @@ namespace ProgettoStudio
             {
                 var row = grid.Rows[e.RowIndex];
                 var item = row.DataBoundItem;
+       
+                EditDelegate?.Invoke((EntityBase)item);
 
-                if (item is AreeEntity areeEntity)
-                {
-                    FrmAree area = new FrmAree();
-
-                    area.ShowModal(areeEntity);
-                }
             }
+
         }
 
 

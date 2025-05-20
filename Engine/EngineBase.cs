@@ -35,6 +35,10 @@ namespace Engine
 
         public List<string> Update(EntityBase entity)
         {
+            var dataLayer = DALFactory.Create();
+
+            dataLayer.Update(entity);
+
             return new List<string>();
         }
 
