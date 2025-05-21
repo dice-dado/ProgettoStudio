@@ -89,7 +89,12 @@ namespace ProgettoStudio
             engineBase.Update(this.mEntity);
 
             this.Close();
+
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
+            ((BindingList<RiferimentoEntity>)riferimentiDataGridView.DataSource).Add(new RiferimentoEntity { Telefono = "aaaaaa" });
+        }
     }
 }
