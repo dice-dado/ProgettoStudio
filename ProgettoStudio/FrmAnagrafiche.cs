@@ -23,30 +23,39 @@ namespace ProgettoStudio
             InitializeComponent();
         }
 
-
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
             saveButton.Click += SaveButton_Click;
+
+            riferimentiDataGridView.AllowUserToAddRows = true;
+            riferimentiDataGridView.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
+            riferimentiDataGridView.ReadOnly = false;
+
+            mEntity = new AnagraficaEntity();
         }
 
         public void ShowModal(AnagraficaEntity entity)
         {
-            this.mEntity = entity;
+            if (entity != null)
+            {
+                this.mEntity = entity;
 
-            idTextBox.Text = entity.IdAnagrafica.ToString();
-            ragioneSocialeTextBox.Text = entity.RagioneSociale;
-            partitaIVATextBox.Text = entity.PartitaIVA;
-            indirizzoTextBox.Text = entity.Indirizzo;
-            telefonoTextBox.Text = entity.Telefono;
+                idTextBox.Text = entity?.IdAnagrafica.ToString();
+                ragioneSocialeTextBox.Text = entity?.RagioneSociale;
+                partitaIVATextBox.Text = entity?.PartitaIVA;
+                indirizzoTextBox.Text = entity?.Indirizzo;
+                telefonoTextBox.Text = entity?.Telefono;
 
 
-            AnagraficheEngine engineBase = new AnagraficheEngine();
-            AnagraficaEntity entityDB = (AnagraficaEntity)engineBase.Read(entity.IdAnagrafica.ToString());
+                AnagraficheEngine engineBase = new AnagraficheEngine();
+                AnagraficaEntity entityDB = (AnagraficaEntity)engineBase.Read(entity.IdAnagrafica.ToString());
 
-            riferimentiDataGridView.DataSource = entityDB.Riferimenti;
-            riferimentiDataGridView.Refresh();
+                riferimentiDataGridView.DataSource = entityDB.Riferimenti;
+                riferimentiDataGridView.Refresh();
+            }
+            
 
             this.ShowDialog();
         }
@@ -65,7 +74,7 @@ namespace ProgettoStudio
 
             mEntity.Riferimenti.Clear();
 
-            foreach (var rif in (IEnumerable<RiferimentoEntity>)riferimentiDataGridView.DataSource )
+            foreach (var rif in (IEnumerable<RiferimentoEntity>)riferimentiDataGridView.DataSource ?? Enumerable.Empty<RiferimentoEntity>())
             {
                 var riferimento = new RiferimentoEntity
                 {
@@ -75,9 +84,7 @@ namespace ProgettoStudio
                 };
 
                 mEntity.Riferimenti.Add(riferimento);
-
             }
-
             
             engineBase.Update(this.mEntity);
 

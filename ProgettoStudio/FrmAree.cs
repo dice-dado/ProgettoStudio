@@ -26,16 +26,21 @@ namespace ProgettoStudio
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            mEntity = new AreeEntity();
 
             saveButton.Click += SaveButton_Click;
+            
         }
 
         public void ShowModal(AreeEntity entity)
         { 
-            this.mEntity = entity;
+            if (entity != null)
+            {
+                this.mEntity = entity;
 
-            codiceTextBox.Text = entity.Codice;
-            descrizioneTextBox.Text = entity.Descrizione;
+                codiceTextBox.Text = entity.Codice;
+                descrizioneTextBox.Text = entity.Descrizione;
+            }
 
             this.ShowDialog();
         }

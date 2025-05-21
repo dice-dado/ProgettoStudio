@@ -37,13 +37,13 @@ namespace ProgettoStudio
             frmElenco.RefreshDelegate += engine.ReadAll;            
             frmElenco.EditDelegate += (EntityBase entity) => 
             {                                
-                FrmAree area = new FrmAree();
+                FrmAree frmArea = new FrmAree();
 
-                area.FormClosed += (s, args) =>
+                frmArea.FormClosed += (s, args) =>
                 {
                   frmElenco.RefreshDelegate.Invoke();
                 };
-                area.ShowModal((AreeEntity)entity);                
+                frmArea.ShowModal((AreeEntity)entity);                
             };            
             frmElenco.ShowDialog();
         }
@@ -57,13 +57,13 @@ namespace ProgettoStudio
             frmElenco.RefreshDelegate += engine.ReadAll;            
             frmElenco.EditDelegate += (EntityBase entity) => 
             {                                
-                FrmAnagrafiche area = new FrmAnagrafiche();
+                FrmAnagrafiche fromAnagrafica = new FrmAnagrafiche();
 
-                area.FormClosed += (s, args) =>
+                fromAnagrafica.FormClosed += (s, args) =>
                 {
                   frmElenco.RefreshDelegate.Invoke();
                 };
-                area.ShowModal((AnagraficaEntity)entity);                
+                fromAnagrafica.ShowModal((AnagraficaEntity)entity);                
             };            
             frmElenco.ShowDialog();
         }

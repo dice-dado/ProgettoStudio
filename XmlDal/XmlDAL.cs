@@ -69,8 +69,7 @@ namespace XmlDal
                             RagioneSociale = anagrafica.Attribute("RagioneSociale")?.Value,
                             PartitaIVA = anagrafica.Attribute("PartitaIva")?.Value,
                             Indirizzo = anagrafica.Attribute("Indirizzo")?.Value,
-                            Telefono = anagrafica.Attribute("Telefono")?.Value,
-                            Riferimenti = new List<RiferimentoEntity>()
+                            Telefono = anagrafica.Attribute("Telefono")?.Value                            
                         };
 
                         var riferimenti = anagrafica.Elements("Riferimento");
@@ -137,8 +136,7 @@ namespace XmlDal
                             RagioneSociale = anagrafica.Attribute("RagioneSociale")?.Value,
                             PartitaIVA = anagrafica.Attribute("PartitaIva")?.Value,
                             Indirizzo = anagrafica.Attribute("Indirizzo")?.Value,
-                            Telefono = anagrafica.Attribute("Telefono")?.Value,
-                            Riferimenti = new List<RiferimentoEntity>()
+                            Telefono = anagrafica.Attribute("Telefono")?.Value
                         };
 
                         var riferimenti = anagrafica.Elements("Riferimento");
@@ -172,16 +170,31 @@ namespace XmlDal
 
             if (entity is AreeEntity areeEntity)
             {
-                var aree = mDoc.Root.Element("Aree")?.Elements("Area");
+                var areeContainer = mDoc.Root.Element("Aree");
+                var aree = areeContainer?.Elements("Area");
 
                 if (aree != null)
                 {
+                    bool found = false;
                     foreach (var area in aree)
                     {
                         string codice = area.Attribute("Codice")?.Value;
                         if (codice == areeEntity.Codice)
+                        { 
                             area.SetAttributeValue("Descrizione", areeEntity.Descrizione);
+                            found = true;
+                        }
                     }
+                    if (!found)
+                    {
+                        var areaElement = new XElement("Area",
+                                    new XAttribute("Codice", areeEntity.Codice ?? string.Empty),
+                                    new XAttribute("Descrizione", areeEntity.Descrizione ?? string.Empty)
+                                );
+
+                        areeContainer.Add(areaElement);
+                    }
+                    
                 }
 
                 mDoc.Save("XMLData.xml");
@@ -190,17 +203,21 @@ namespace XmlDal
             }
             else if (entity is AnagraficaEntity anagraficaEntity)
             {
-
-                var anagrafiche = mDoc.Root.Element("Anagrafiche")?.Elements("Anagrafica");
+                var anagraficheContainer = mDoc.Root.Element("Anagrafiche");
+                var anagrafiche = anagraficheContainer?.Elements("Anagrafica");
 
                 if (anagrafiche != null)
                 {
+                    bool found = false;
+
                     foreach (var anagrafica in anagrafiche)
                     {
                         string id = anagrafica.Attribute("IdAnagrafica")?.Value;
 
                         if (id == anagraficaEntity.IdAnagrafica.ToString())
                         {
+                            found = true;
+
                             anagrafica.SetAttributeValue("RagioneSociale", anagraficaEntity.RagioneSociale);
                             anagrafica.SetAttributeValue("PartitaIva", anagraficaEntity.PartitaIVA);
                             anagrafica.SetAttributeValue("Indirizzo", anagraficaEntity.Indirizzo);
@@ -221,6 +238,30 @@ namespace XmlDal
 
                             break; 
                         }
+
+                        
+                    }
+                    if (!found)
+                    {                      
+                        var anagraficaElement = new XElement("Anagrafica",
+                                    new XAttribute("RagioneSociale", anagraficaEntity.RagioneSociale ?? string.Empty),
+                                    new XAttribute("PartitaIva", anagraficaEntity.PartitaIVA ?? string.Empty),
+                                    new XAttribute("Indirizzo", anagraficaEntity.Indirizzo ?? string.Empty),
+                                    new XAttribute("Telefono", anagraficaEntity.Telefono ?? string.Empty)
+                                );
+
+                        foreach (var riferimento in anagraficaEntity.Riferimenti)
+                        {
+                            var riferimentoElement = new XElement("Riferimento",
+                                new XAttribute("Nome", riferimento.Nome ?? string.Empty),
+                                new XAttribute("Cognome", riferimento.Cognome ?? string.Empty),
+                                new XAttribute("Telefono", riferimento.Telefono ?? string.Empty)
+                            );
+
+                            anagraficaElement.Add(riferimentoElement);
+                        }
+
+                        anagraficheContainer.Add(anagraficaElement);
                     }
                 }
 

@@ -34,7 +34,7 @@ namespace Engine
             List<string> result = new List<string>();
             var dataLayer = DALFactory.Create();
 
-            if( dataLayer.ReadAll<AreeEntity>().Where(a => a.Descrizione.Substring(0, 1) == "N").Count() > 1 ) 
+            if( dataLayer.ReadAll<AreeEntity>().Where(a => a.Descrizione.Substring(0, 1) == "N").Count() > 2 ) 
             {
                 result.Add("Numero di N superiore al consentito");
             }

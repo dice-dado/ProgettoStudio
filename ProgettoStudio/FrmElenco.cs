@@ -24,7 +24,11 @@ namespace ProgettoStudio
         {
             InitializeComponent();
 
-            RefreshDelegate += () => { dataGridView.Refresh(); return null; };
+            RefreshDelegate += () => 
+            { 
+                dataGridView.Refresh(); 
+                return null; 
+            };
         }
 
         protected override void OnLoad(EventArgs e)
@@ -45,7 +49,7 @@ namespace ProgettoStudio
 
         private void NewButton_Click(object sender, EventArgs e)
         {
-
+            EditDelegate?.Invoke(null);
         }
 
         private void DataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -78,8 +79,8 @@ namespace Entity
             }
         }
 
-        private List<RiferimentoEntity> mRiferimenti;
-        public List<RiferimentoEntity> Riferimenti
+        private BindingList<RiferimentoEntity> mRiferimenti = [];
+        public BindingList<RiferimentoEntity> Riferimenti
         {
             get { return mRiferimenti; }
             set
@@ -87,7 +88,7 @@ namespace Entity
                 if (mRiferimenti != value)
                 {
                     mRiferimenti = value;
-                    RaiseNotifyPropertyChanged(nameof(Riferimenti));
+                    RaiseNotifyPropertyChanged(nameof(Telefono));
                 }
             }
         }
@@ -98,6 +99,15 @@ namespace Entity
                 throw new InvalidOperationException("La ragione sociale non può essere vuota (XX).");
 
             return !string.IsNullOrWhiteSpace(PartitaIVA);
+        }
+
+        public void SetRiferimenti(IEnumerable<RiferimentoEntity> source)
+        {
+            if (source != null && !mRiferimenti.SequenceEqual(source))
+            {
+                mRiferimenti = new BindingList<RiferimentoEntity>(source?.ToList() ?? []);
+                RaiseNotifyPropertyChanged(nameof(Riferimenti));
+            }
         }
     }
 
