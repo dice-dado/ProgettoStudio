@@ -40,8 +40,13 @@ namespace ProgettoStudio
         {
             if (entity != null)
             {
+                AnagraficaEntity entityDB = (AnagraficaEntity)Manager.Read<AnagraficaEntity>(entity.IdAnagrafica.ToString());
+
+                entity.Riferimenti = entityDB.Riferimenti;
                 Manager.Init(entity);
 
+                riferimentiDataGridView.DataSource = entity.Riferimenti;
+                riferimentiDataGridView.Refresh();
 
                 idTextBox.Text = entity?.IdAnagrafica.ToString();
                 ragioneSocialeTextBox.Text = entity?.RagioneSociale;
@@ -49,10 +54,6 @@ namespace ProgettoStudio
                 indirizzoTextBox.Text = entity?.Indirizzo;
                 telefonoTextBox.Text = entity?.Telefono;
 
-                AnagraficaEntity entityDB = (AnagraficaEntity)Manager.Read<AnagraficaEntity>(entity.IdAnagrafica.ToString());
-
-                riferimentiDataGridView.DataSource = entityDB.Riferimenti;
-                riferimentiDataGridView.Refresh();
 
                 idTextBox.ReadOnly = true;
 
@@ -77,6 +78,7 @@ namespace ProgettoStudio
             ((AnagraficaEntity)Manager.Entity).PartitaIVA = partitaIVATextBox.Text;
             ((AnagraficaEntity)Manager.Entity).Indirizzo = indirizzoTextBox.Text;
             ((AnagraficaEntity)Manager.Entity).Telefono = telefonoTextBox.Text;
+
 
             var errors = Manager.OnSave();
 
