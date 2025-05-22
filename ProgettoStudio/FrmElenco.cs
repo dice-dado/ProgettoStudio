@@ -14,6 +14,9 @@ namespace ProgettoStudio
 {
     public partial class FrmElenco : Form
     {
+        public delegate IEnumerable<EntityBase> FilterRefresh(string filter);
+        
+        public FilterRefresh FilterRefreshDelegate { get; set; }
 
         public Func<IEnumerable<EntityBase>> RefreshDelegate { get; set; }
 
@@ -31,19 +34,19 @@ namespace ProgettoStudio
 
             dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
 
-            if (RefreshDelegate != null)
+            filtraButton.Click += Filtra_Click;
+
+            if (FilterRefreshDelegate != null)
             {
-                dataGridView.DataSource = RefreshDelegate();
+                dataGridView.DataSource = FilterRefreshDelegate(null);
             }
 
         }
-
          
-
         private void NewButton_Click(object sender, EventArgs e)
         {
             EditDelegate(null);
-            dataGridView.DataSource = RefreshDelegate();
+            dataGridView.DataSource = FilterRefreshDelegate(null);
         }
 
         private void DataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -56,12 +59,16 @@ namespace ProgettoStudio
                 var item = row.DataBoundItem;
        
                 EditDelegate((EntityBase)item);
-                dataGridView.DataSource = RefreshDelegate();
+                dataGridView.DataSource = FilterRefreshDelegate(null);
 
             }
 
         }
 
+        private void Filtra_Click(object sender, EventArgs e)
+        {
+            dataGridView.DataSource = FilterRefreshDelegate(filtraTextBox.Text);
+        }
 
     }
 }

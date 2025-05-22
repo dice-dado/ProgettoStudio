@@ -10,16 +10,30 @@ namespace Manager
 {
     public class AreeManager : ManagerBase
     {
-
-        public AreeManager() 
+      
+        public AreeManager(IDialogService dialogService) : base(dialogService) 
         {
             //Entity = new AreeEntity();
             Engine = new AreeEngine();
         }
 
+
         protected override EngineBase GetEngine()
         {
             throw new NotImplementedException();
         }
+
+        protected override void OnDataChanged(string property)
+        {
+            switch (property)
+            {
+                case "Codice":
+                    if(String.IsNullOrEmpty(((AreeEntity)base.Entity).Descrizione))
+                        ((AreeEntity)base.Entity).Descrizione = $"Area: {((AreeEntity)base.Entity).Codice}";
+                    break;
+            
+            }
+        }
+
     }
 }

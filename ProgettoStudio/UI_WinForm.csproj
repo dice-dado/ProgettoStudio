@@ -58,6 +58,7 @@
     <Compile Include="FrmAree.Designer.cs">
       <DependentUpon>FrmAree.cs</DependentUpon>
     </Compile>
+    <Compile Include="ICardForm.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +73,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DialogService.cs" />
     <EmbeddedResource Include="FrmAnagrafiche.resx">
       <DependentUpon>FrmAnagrafiche.cs</DependentUpon>
     </EmbeddedResource>

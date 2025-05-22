@@ -1,5 +1,6 @@
 ﻿using Entity;
 using Manager;
+using ProgettoStudio.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,15 +14,15 @@ using System.Xml;
 
 namespace ProgettoStudio
 {
-    public partial class FrmAnagrafiche : Form
+    public partial class FrmAnagrafiche : Form, ICardForm
     {
-        public AnagraficheManager Manager { get; set; }
+        private readonly AnagraficheManager mManager;
 
         public FrmAnagrafiche()
         {
             InitializeComponent();
 
-            Manager = new AnagraficheManager();
+            mManager = new AnagraficheManager(new DialogService());
         }
 
         protected override void OnLoad(EventArgs e)
@@ -29,6 +30,7 @@ namespace ProgettoStudio
             base.OnLoad(e);
 
             saveButton.Click += SaveButton_Click;
+            cancelButton.Click += CancelButton_Click;
 
             riferimentiDataGridView.AllowUserToAddRows = true;
             riferimentiDataGridView.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
@@ -36,35 +38,34 @@ namespace ProgettoStudio
 
         }
 
-        public void ShowModal(AnagraficaEntity entity)
+        public void ShowModal(EntityBase entity)
         {
             if (entity != null)
             {
-                AnagraficaEntity entityDB = (AnagraficaEntity)Manager.Read<AnagraficaEntity>(entity.IdAnagrafica.ToString());
+                AnagraficaEntity entityDB = (AnagraficaEntity)mManager.Read<AnagraficaEntity>(((AnagraficaEntity)entity).IdAnagrafica.ToString());
 
-                entity.Riferimenti = entityDB.Riferimenti;
-                Manager.Init(entity);
+                ((AnagraficaEntity)entity).SetRiferimenti(entityDB.Riferimenti,true);
+                mManager.Init(entity);
 
-                riferimentiDataGridView.DataSource = entity.Riferimenti;
+                riferimentiDataGridView.DataSource = ((AnagraficaEntity)entity).Riferimenti;
                 riferimentiDataGridView.Refresh();
-
-                idTextBox.Text = entity?.IdAnagrafica.ToString();
-                ragioneSocialeTextBox.Text = entity?.RagioneSociale;
-                partitaIVATextBox.Text = entity?.PartitaIVA;
-                indirizzoTextBox.Text = entity?.Indirizzo;
-                telefonoTextBox.Text = entity?.Telefono;
-
 
                 idTextBox.ReadOnly = true;
 
             }
             else
             {
-                Manager.Init(new AnagraficaEntity());
+                mManager.Init(new AnagraficaEntity());
 
-                riferimentiDataGridView.DataSource = ((AnagraficaEntity)Manager.Entity).Riferimenti;
+                riferimentiDataGridView.DataSource = ((AnagraficaEntity)mManager.Entity).Riferimenti;
                 idTextBox.ReadOnly = false;
             }
+
+            BindControl(idTextBox, entity, nameof(AnagraficaEntity.IdAnagrafica));
+            BindControl(ragioneSocialeTextBox, entity, nameof(AnagraficaEntity.RagioneSociale));
+            BindControl(partitaIVATextBox, entity, nameof(AnagraficaEntity.PartitaIVA));
+            BindControl(indirizzoTextBox, entity, nameof(AnagraficaEntity.Indirizzo));
+            BindControl(telefonoTextBox, entity, nameof(AnagraficaEntity.Telefono));
 
 
             this.ShowDialog();
@@ -73,14 +74,7 @@ namespace ProgettoStudio
         private void SaveButton_Click(object sender, EventArgs e)
         {
 
-            ((AnagraficaEntity)Manager.Entity).IdAnagrafica = int.Parse(idTextBox.Text);
-            ((AnagraficaEntity)Manager.Entity).RagioneSociale = ragioneSocialeTextBox.Text;
-            ((AnagraficaEntity)Manager.Entity).PartitaIVA = partitaIVATextBox.Text;
-            ((AnagraficaEntity)Manager.Entity).Indirizzo = indirizzoTextBox.Text;
-            ((AnagraficaEntity)Manager.Entity).Telefono = telefonoTextBox.Text;
-
-
-            var errors = Manager.OnSave();
+            var errors = mManager.OnSave();
 
             if (errors.Count() > 0)
             {
@@ -90,9 +84,23 @@ namespace ProgettoStudio
                 this.Close();
         }
 
-        private void label1_Click(object sender, EventArgs e)
+
+        private void CancelButton_Click(object sender, EventArgs e)
         {
-            ((BindingList<RiferimentoEntity>)riferimentiDataGridView.DataSource).Add(new RiferimentoEntity { Telefono = "aaaaaa" });
+            string res = (mManager.Action("Cancel").FirstOrDefault() ?? "");
+            if (res == "Yes" || res == string.Empty)
+                this.Close();
+        }
+
+        public static void BindControl(Control control, object dataSource, string propertyName)
+        {
+            control.DataBindings.Clear();
+            control.DataBindings.Add("Text", dataSource, propertyName, true, DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        public IEnumerable<T> ReadAll<T>() where T : EntityBase
+        {
+            return mManager.ReadAll<T>();
         }
     }
 }

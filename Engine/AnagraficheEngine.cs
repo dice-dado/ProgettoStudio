@@ -16,14 +16,14 @@ namespace Engine
             return base.Read();
         }
 
-        public override EntityBase Read<T>(object pkValue)
+        public override T Read<T>(object pkValue)
         {
             var dataLayer = DALFactory.Create();
 
             return dataLayer.Read<T>(pkValue);
         }
 
-        public override IEnumerable<EntityBase> ReadAll<T>()
+        public override IEnumerable<T> ReadAll<T>()
         {
             var dataLayer = DALFactory.Create();
 

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AnagraficheManager.cs" />
     <Compile Include="AreeManager.cs" />
+    <Compile Include="IDialogService.cs" />
     <Compile Include="ManagerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

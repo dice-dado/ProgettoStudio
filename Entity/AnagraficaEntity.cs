@@ -10,12 +10,6 @@ namespace Entity
     public class AnagraficaEntity : EntityBase
     {
 
-        public AnagraficaEntity() 
-        {
-            //mRiferimenti.ListChanged += Riferimenti_ListChanged;
-
-        }
-
         private int mIdAnagrafica;
         public int IdAnagrafica
         {
@@ -99,6 +93,35 @@ namespace Entity
                 }
             }
         }
+
+        public AnagraficaEntity( int idAnagrafica, string ragioneSociale, string partitaIVA, string indirizzo, string telefono)
+        {
+            IdAnagrafica = idAnagrafica;
+            RagioneSociale = ragioneSociale;
+            PartitaIVA = partitaIVA;
+            Indirizzo = indirizzo;
+            Telefono = telefono;
+
+        }
+
+        public void AddRiferimento(RiferimentoEntity riferimento, bool unchanged)
+        {
+            Riferimenti.Add(riferimento);
+            
+        }
+
+
+        public void SetRiferimenti(BindingList<RiferimentoEntity> riferimenti, bool unchanged)
+        {
+            Riferimenti = riferimenti;
+
+        }
+
+        public AnagraficaEntity()
+        { 
+        
+        }
+
         private void Riferimenti_ListChanged(object sender, ListChangedEventArgs e)
         {
             if (e.ListChangedType == ListChangedType.ItemAdded)
@@ -120,14 +143,6 @@ namespace Entity
             return !string.IsNullOrWhiteSpace(PartitaIVA);
         }
 
-        public void SetRiferimenti(IEnumerable<RiferimentoEntity> source)
-        {
-            if (source != null && !mRiferimenti.SequenceEqual(source))
-            {
-                mRiferimenti = new BindingList<RiferimentoEntity>(source?.ToList() ?? []);
-                RaiseNotifyPropertyChanged(nameof(Riferimenti));
-            }
-        }
     }
 
     

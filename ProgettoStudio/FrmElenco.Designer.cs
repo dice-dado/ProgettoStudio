@@ -30,6 +30,8 @@
         {
             this.newButton = new System.Windows.Forms.Button();
             this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.filtraButton = new System.Windows.Forms.Button();
+            this.filtraTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -51,17 +53,36 @@
             this.dataGridView.Size = new System.Drawing.Size(799, 407);
             this.dataGridView.TabIndex = 4;
             // 
+            // filtraButton
+            // 
+            this.filtraButton.Location = new System.Drawing.Point(694, 12);
+            this.filtraButton.Name = "filtraButton";
+            this.filtraButton.Size = new System.Drawing.Size(75, 23);
+            this.filtraButton.TabIndex = 5;
+            this.filtraButton.Text = "Filter";
+            this.filtraButton.UseVisualStyleBackColor = true;
+            // 
+            // filtraTextBox
+            // 
+            this.filtraTextBox.Location = new System.Drawing.Point(568, 14);
+            this.filtraTextBox.Name = "filtraTextBox";
+            this.filtraTextBox.Size = new System.Drawing.Size(120, 20);
+            this.filtraTextBox.TabIndex = 6;
+            // 
             // FrmElenco
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.filtraTextBox);
+            this.Controls.Add(this.filtraButton);
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.newButton);
             this.Name = "FrmElenco";
             this.Text = "Form2";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -69,5 +90,7 @@
 
         private System.Windows.Forms.Button newButton;
         private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.Button filtraButton;
+        private System.Windows.Forms.TextBox filtraTextBox;
     }
 }

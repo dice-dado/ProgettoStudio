@@ -14,8 +14,8 @@ namespace Engine
         {         
             return default; 
         }
-        public abstract EntityBase Read<T>(object pkValue) where T : EntityBase;
-        public abstract IEnumerable<EntityBase> ReadAll<T>() where T : EntityBase;        
+        public abstract T Read<T>(object pkValue) where T : EntityBase;
+        public abstract IEnumerable<T> ReadAll<T>() where T : EntityBase;        
         public virtual List<string> Update(EntityBase entity)
         {
             var errorList = new List<string>();

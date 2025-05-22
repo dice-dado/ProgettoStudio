@@ -31,38 +31,32 @@ namespace ProgettoStudio
         public void Aree_Click(object sender, EventArgs e)
         {
             FrmElenco frmElenco = new FrmElenco();
+            var frmArea = new FrmAree() as ICardForm;
 
-            AreeManager manager = new AreeManager();
-
-            frmElenco.RefreshDelegate += manager.ReadAll<AreeEntity>;            
-            frmElenco.EditDelegate += (EntityBase entity) => 
-            {                                
-                FrmAree frmArea = new FrmAree();
-
-                frmArea.FormClosed += (s, args) =>
-                {
-                  frmElenco.RefreshDelegate.Invoke();
-                };
+            frmElenco.FilterRefreshDelegate = (filter) => { 
+                var elenco = frmArea.ReadAll<AreeEntity>(); 
+                return elenco.Filter(filter); 
+            };
+            frmElenco.EditDelegate = (EntityBase entity) => 
+            {                                           
                 frmArea.ShowModal((AreeEntity)entity);                
             };            
+
             frmElenco.ShowDialog();
         }
 
         public void Anagrafiche_Click(object sender, EventArgs e)
         {
             FrmElenco frmElenco = new FrmElenco();
+            var frmAnagrafica = new FrmAnagrafiche() as ICardForm;
 
-            AnagraficheManager manager = new AnagraficheManager();
-
-            frmElenco.RefreshDelegate += manager.ReadAll<AnagraficaEntity>;            
+            frmElenco.FilterRefreshDelegate = (filter) => 
+            { 
+                var elenco = frmAnagrafica.ReadAll<AnagraficaEntity>(); 
+                return elenco.Filter(filter); 
+            };
             frmElenco.EditDelegate += (EntityBase entity) => 
-            {                                
-                FrmAnagrafiche frmAnagrafica = new FrmAnagrafiche();
-               
-                frmAnagrafica.FormClosed += (s, args) =>
-                {
-                  frmElenco.RefreshDelegate.Invoke();
-                };
+            {                                               
                 frmAnagrafica.ShowModal((AnagraficaEntity)entity);                
             };            
             frmElenco.ShowDialog();

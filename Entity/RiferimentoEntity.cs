@@ -65,6 +65,7 @@ namespace Entity
         }
 
         private string mTelefono;
+
         public string Telefono
         {
             get { return mTelefono; }
@@ -77,5 +78,20 @@ namespace Entity
                 }
             }
         }
+
+
+        public RiferimentoEntity(string mNome, string mCognome, string mTelefono)
+        {
+
+            this.mNome = mNome;
+            this.mCognome = mCognome;
+            this.mTelefono = mTelefono;
+        }
+
+        public RiferimentoEntity()
+        { 
+        
+        }
+
     }
 }

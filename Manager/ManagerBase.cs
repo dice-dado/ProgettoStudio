@@ -15,17 +15,26 @@ namespace Manager
     public abstract class ManagerBase
     {
         public virtual EntityBase Entity { get; set; }
-        public EngineBase Engine { get; set; }
+        protected EngineBase Engine { get; set; }
 
+        protected IDialogService mDialogService;
+
+
+        protected ManagerBase(IDialogService service) 
+        {
+            mDialogService = service;
+        }
         
         public virtual void Init(EntityBase entity)
         {
             if (entity != null)
                 Entity = entity;
-            
-            //Entity.PropertyChanged += DataChangedCaller;
 
-            //SubscribeListItemsPropertyChanged(entity, DataSlaveChangedCaller);
+            entity.EntityState = EntityState.Unchanged;
+            
+            Entity.PropertyChanged += DataChangedCaller;
+
+            SubscribeListItemsPropertyChanged(entity, DataSlaveChangedCaller);
         }
 
         public virtual EntityBase Read<T>(object pk) where T : EntityBase
@@ -33,9 +42,8 @@ namespace Manager
             return Engine.Read<T>(pk);
         }
 
-
         //qua senza i Generics mi sono bloccato
-        public virtual IEnumerable<EntityBase> ReadAll<T>() where T : EntityBase 
+        public virtual IEnumerable<T> ReadAll<T>() where T : EntityBase 
         {
             return Engine.ReadAll<T>();
         }
@@ -55,22 +63,20 @@ namespace Manager
         }
         
         protected virtual void OnDataChanged(string property)
-        {
-
+        {        
+            
         }
 
         protected virtual void OnDataSlaveChanged(BindableEntity row, string property)
-        { 
-                
+        {
+            Entity.EntityState = EntityState.Modified;
         }
 
         public virtual List<string> OnSave()
         { 
             return Engine.Update(Entity);        
         }
-
-
-
+         
         private void SubscribeListItemsPropertyChanged(object target, PropertyChangedEventHandler handler)
         {        
             var props = target.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
@@ -91,6 +97,30 @@ namespace Manager
                     }
                 }
             }
+        }
+
+        public List<string> Action(string action)
+        {
+            switch (action)
+            {
+                case "Cancel":
+                    return OnCancel(); 
+                default:
+                    return new List<string>();
+            }
+
+        }
+
+        protected virtual List<string> OnCancel()
+        {
+            if (Entity.EntityState == EntityState.Modified)
+            {
+                bool result = mDialogService.ShowMessageBox("Le modifiche non salvate verranno perse.\nProseguire?");
+
+                return new List<string>() { result ? "Yes" : "No" };
+            }
+
+            return new List<string>();
         }
 
     }

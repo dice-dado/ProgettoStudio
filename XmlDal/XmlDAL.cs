@@ -45,7 +45,7 @@ namespace XmlDal
                         string codice = area.Attribute("Codice")?.Value;
                         string descrizione = area.Attribute("Descrizione")?.Value;
                         if(codice == pkValue.ToString())
-                            return (T)(object)new AreeEntity { Codice = codice, Descrizione = descrizione };
+                            return (T)(object)new AreeEntity(codice, descrizione);
                     }
                 }
 
@@ -64,26 +64,24 @@ namespace XmlDal
                             continue;
 
                         var anagraficaCorrente = new AnagraficaEntity
-                        {
-                            IdAnagrafica = (int?)anagrafica.Attribute("IdAnagrafica") ?? 0,
-                            RagioneSociale = anagrafica.Attribute("RagioneSociale")?.Value,
-                            PartitaIVA = anagrafica.Attribute("PartitaIva")?.Value,
-                            Indirizzo = anagrafica.Attribute("Indirizzo")?.Value,
-                            Telefono = anagrafica.Attribute("Telefono")?.Value                            
-                        };
+                        ((int?)anagrafica.Attribute("IdAnagrafica") ?? 0,
+                            anagrafica.Attribute("RagioneSociale")?.Value,
+                            anagrafica.Attribute("PartitaIva")?.Value,
+                            anagrafica.Attribute("Indirizzo")?.Value,
+                            anagrafica.Attribute("Telefono")?.Value
+                        );
 
                         var riferimenti = anagrafica.Elements("Riferimento");
 
                         foreach (var riferimento in riferimenti)
                         {
-                            var riferimentoCorrente = new RiferimentoEntity
-                            {
-                                Nome = riferimento.Attribute("Nome")?.Value,
-                                Cognome = riferimento.Attribute("Cognome")?.Value,
-                                Telefono = riferimento.Attribute("Telefono")?.Value
-                            };
+                            var riferimentoCorrente = new RiferimentoEntity(
+                                riferimento.Attribute("Nome")?.Value,
+                                riferimento.Attribute("Cognome")?.Value,
+                                riferimento.Attribute("Telefono")?.Value
+                            );
 
-                            anagraficaCorrente.Riferimenti.Add(riferimentoCorrente);
+                            anagraficaCorrente.AddRiferimento(riferimentoCorrente, true);
                         }
 
                         return (T)(object)anagraficaCorrente;
@@ -113,7 +111,7 @@ namespace XmlDal
                         string codice = area.Attribute("Codice")?.Value;
                         string descrizione = area.Attribute("Descrizione")?.Value;
 
-                        areeEntities.Add(new AreeEntity { Codice = codice, Descrizione = descrizione });    
+                        areeEntities.Add(new AreeEntity(codice, descrizione));    
                     }
                 }
 
@@ -131,24 +129,23 @@ namespace XmlDal
                     foreach (var anagrafica in anagrafiche)
                     {
                         var anagraficaCorrente = new AnagraficaEntity
-                        {
-                            IdAnagrafica = (int?)anagrafica.Attribute("IdAnagrafica") ?? 0,
-                            RagioneSociale = anagrafica.Attribute("RagioneSociale")?.Value,
-                            PartitaIVA = anagrafica.Attribute("PartitaIva")?.Value,
-                            Indirizzo = anagrafica.Attribute("Indirizzo")?.Value,
-                            Telefono = anagrafica.Attribute("Telefono")?.Value
-                        };
+                        (
+                            (int?)anagrafica.Attribute("IdAnagrafica") ?? 0,
+                            anagrafica.Attribute("RagioneSociale")?.Value,
+                            anagrafica.Attribute("PartitaIva")?.Value,
+                            anagrafica.Attribute("Indirizzo")?.Value,
+                            anagrafica.Attribute("Telefono")?.Value
+                        );
 
                         var riferimenti = anagrafica.Elements("Riferimento");
 
                         foreach (var riferimento in riferimenti)
                         {
-                            var riferimentoCorrente = new RiferimentoEntity
-                            {
-                                Nome = riferimento.Attribute("Nome")?.Value,
-                                Cognome = riferimento.Attribute("Cognome")?.Value,
-                                Telefono = riferimento.Attribute("Telefono")?.Value
-                            };
+                            var riferimentoCorrente = new RiferimentoEntity(
+                                riferimento.Attribute("Nome")?.Value,
+                                riferimento.Attribute("Cognome")?.Value,
+                                riferimento.Attribute("Telefono")?.Value
+                            );
 
                             anagraficaCorrente.Riferimenti.Add(riferimentoCorrente);
                         }

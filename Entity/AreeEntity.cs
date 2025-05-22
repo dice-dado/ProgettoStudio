@@ -8,6 +8,19 @@ namespace Entity
 {
     public class AreeEntity : EntityBase
     {        
+        public AreeEntity(string codice, string descrizione) 
+        { 
+            mCodice = codice;
+            mDescrizione = descrizione;
+
+            //base.EntityState = EntityState.Unchanged;
+        } 
+
+        public AreeEntity() 
+        { 
+           
+        } 
+
         private string mCodice;
         public string Codice 
         {
