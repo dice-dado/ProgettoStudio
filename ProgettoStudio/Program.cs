@@ -16,7 +16,15 @@ namespace ProgettoStudio
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                Exception ex = (Exception)e.ExceptionObject;
+                Console.WriteLine(ex.Message);
+            };
+            
             Application.Run(new Form1());
+
         }
         
     }

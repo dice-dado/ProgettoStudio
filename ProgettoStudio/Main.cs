@@ -1,5 +1,5 @@
-﻿using Engine;
-using Entity;
+﻿using Entity;
+using Manager;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,9 +32,9 @@ namespace ProgettoStudio
         {
             FrmElenco frmElenco = new FrmElenco();
 
-            AreeEngine engine = new AreeEngine();
+            AreeManager manager = new AreeManager();
 
-            frmElenco.RefreshDelegate += engine.ReadAll;            
+            frmElenco.RefreshDelegate += manager.ReadAll<AreeEntity>;            
             frmElenco.EditDelegate += (EntityBase entity) => 
             {                                
                 FrmAree frmArea = new FrmAree();
@@ -52,18 +52,18 @@ namespace ProgettoStudio
         {
             FrmElenco frmElenco = new FrmElenco();
 
-            AnagraficheEngine engine = new AnagraficheEngine();
+            AnagraficheManager manager = new AnagraficheManager();
 
-            frmElenco.RefreshDelegate += engine.ReadAll;            
+            frmElenco.RefreshDelegate += manager.ReadAll<AnagraficaEntity>;            
             frmElenco.EditDelegate += (EntityBase entity) => 
             {                                
-                FrmAnagrafiche fromAnagrafica = new FrmAnagrafiche();
-
-                fromAnagrafica.FormClosed += (s, args) =>
+                FrmAnagrafiche frmAnagrafica = new FrmAnagrafiche();
+               
+                frmAnagrafica.FormClosed += (s, args) =>
                 {
                   frmElenco.RefreshDelegate.Invoke();
                 };
-                fromAnagrafica.ShowModal((AnagraficaEntity)entity);                
+                frmAnagrafica.ShowModal((AnagraficaEntity)entity);                
             };            
             frmElenco.ShowDialog();
         }

@@ -9,6 +9,13 @@ namespace Entity
 {
     public class AnagraficaEntity : EntityBase
     {
+
+        public AnagraficaEntity() 
+        {
+            //mRiferimenti.ListChanged += Riferimenti_ListChanged;
+
+        }
+
         private int mIdAnagrafica;
         public int IdAnagrafica
         {
@@ -87,8 +94,20 @@ namespace Entity
             {
                 if (mRiferimenti != value)
                 {
-                    mRiferimenti = value;
-                    RaiseNotifyPropertyChanged(nameof(Telefono));
+                    mRiferimenti = value ?? [];
+                    RaiseNotifyPropertyChanged(nameof(Riferimenti));
+                }
+            }
+        }
+        private void Riferimenti_ListChanged(object sender, ListChangedEventArgs e)
+        {
+            if (e.ListChangedType == ListChangedType.ItemAdded)
+            {
+                var newItem = mRiferimenti[e.NewIndex];
+                if (newItem != null)
+                {
+                    newItem.IdAnagrafica = this.IdAnagrafica;
+                    newItem.IdRiferimento = Riferimenti.OrderBy(r => r.IdRiferimento).FirstOrDefault()?.IdRiferimento?? 0 + 1;
                 }
             }
         }

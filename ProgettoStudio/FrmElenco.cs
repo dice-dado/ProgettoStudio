@@ -1,5 +1,4 @@
-﻿using Engine;
-using Entity;
+﻿using Entity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,32 +23,27 @@ namespace ProgettoStudio
         {
             InitializeComponent();
 
-            RefreshDelegate += () => 
-            { 
-                dataGridView.Refresh(); 
-                return null; 
-            };
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
+            dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
+
             if (RefreshDelegate != null)
             {
-                var elenco = RefreshDelegate.Invoke();
-
-                dataGridView.DataSource = elenco.Cast<object>().ToList();
+                dataGridView.DataSource = RefreshDelegate();
             }
 
-            dataGridView.CellDoubleClick += DataGridView_CellDoubleClick;
         }
 
          
 
         private void NewButton_Click(object sender, EventArgs e)
         {
-            EditDelegate?.Invoke(null);
+            EditDelegate(null);
+            dataGridView.DataSource = RefreshDelegate();
         }
 
         private void DataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -61,7 +55,8 @@ namespace ProgettoStudio
                 var row = grid.Rows[e.RowIndex];
                 var item = row.DataBoundItem;
        
-                EditDelegate?.Invoke((EntityBase)item);
+                EditDelegate((EntityBase)item);
+                dataGridView.DataSource = RefreshDelegate();
 
             }
 

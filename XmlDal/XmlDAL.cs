@@ -11,7 +11,7 @@ using System.Xml.Linq;
 namespace XmlDal
 {
     public class XmlDAL : IDAL
-    {
+    {   
 
         XDocument mDoc;
 
@@ -183,6 +183,7 @@ namespace XmlDal
                         { 
                             area.SetAttributeValue("Descrizione", areeEntity.Descrizione);
                             found = true;
+                            break;
                         }
                     }
                     if (!found)
@@ -218,6 +219,7 @@ namespace XmlDal
                         {
                             found = true;
 
+                            anagrafica.SetAttributeValue("IdAnagrafica", anagraficaEntity.IdAnagrafica);
                             anagrafica.SetAttributeValue("RagioneSociale", anagraficaEntity.RagioneSociale);
                             anagrafica.SetAttributeValue("PartitaIva", anagraficaEntity.PartitaIVA);
                             anagrafica.SetAttributeValue("Indirizzo", anagraficaEntity.Indirizzo);
@@ -244,6 +246,7 @@ namespace XmlDal
                     if (!found)
                     {                      
                         var anagraficaElement = new XElement("Anagrafica",
+                                    new XAttribute("IdAnagrafica", anagraficaEntity.IdAnagrafica),
                                     new XAttribute("RagioneSociale", anagraficaEntity.RagioneSociale ?? string.Empty),
                                     new XAttribute("PartitaIva", anagraficaEntity.PartitaIVA ?? string.Empty),
                                     new XAttribute("Indirizzo", anagraficaEntity.Indirizzo ?? string.Empty),

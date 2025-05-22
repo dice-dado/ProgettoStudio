@@ -1,5 +1,5 @@
-﻿using Engine;
-using Entity;
+﻿using Entity;
+using Manager;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,45 +15,57 @@ namespace ProgettoStudio
 {
     public partial class FrmAree : Form
     {
-
-        private AreeEntity mEntity;        
+        public AreeManager Manager { get; set; }       
 
         public FrmAree()
         {
             InitializeComponent();
+
+            Manager = new AreeManager();
+            
         }
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            mEntity = new AreeEntity();
-
-            saveButton.Click += SaveButton_Click;
             
+            saveButton.Click += SaveButton_Click;
+                        
         }
 
         public void ShowModal(AreeEntity entity)
-        { 
+        {
+
             if (entity != null)
             {
-                this.mEntity = entity;
-
                 codiceTextBox.Text = entity.Codice;
                 descrizioneTextBox.Text = entity.Descrizione;
             }
+            else 
+            {
+                entity = new AreeEntity();    
+            }
+
+            Manager.Init(entity);
+
 
             this.ShowDialog();
         }
 
-        private void SaveButton_Click(object sender, EventArgs e)     
-        {            
-            mEntity.Codice = codiceTextBox.Text;
-            mEntity.Descrizione = descrizioneTextBox.Text;
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            ((AreeEntity)Manager.Entity).Codice = codiceTextBox.Text;
+            ((AreeEntity)Manager.Entity).Descrizione = descrizioneTextBox.Text;
 
-            AreeEngine engineBase = new AreeEngine();            
-            engineBase.Update(this.mEntity);
+            var errors = Manager.OnSave();
 
-            this.Close();
+
+            if (errors.Count() > 0)
+            {
+                //ShowModal();
+            }
+            else
+                this.Close();
         }
 
 

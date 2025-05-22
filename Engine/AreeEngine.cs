@@ -15,14 +15,14 @@ namespace Engine
             return base.Read();
         }
 
-        public override EntityBase Read(object pkValue)
+        public override EntityBase Read<T>(object pkValue)
         {
             var dataLayer = DALFactory.Create();
 
             return dataLayer.Read<AreeEntity>(pkValue);
         }
 
-        public override IEnumerable<EntityBase> ReadAll()
+        public override IEnumerable<EntityBase> ReadAll<T>()
         {
             var dataLayer = DALFactory.Create();
 
@@ -34,10 +34,10 @@ namespace Engine
             List<string> result = new List<string>();
             var dataLayer = DALFactory.Create();
 
-            if( dataLayer.ReadAll<AreeEntity>().Where(a => a.Descrizione.Substring(0, 1) == "N").Count() > 2 ) 
-            {
-                result.Add("Numero di N superiore al consentito");
-            }
+            //if(dataLayer.ReadAll<AreeEntity>().Where(a => a.Codice.Substring(0, 1) == "N").Count() >= 2 && ((AreeEntity)entity).Codice.Substring(0, 1) == "N") 
+            //{
+            //    result.Add("Numero di N superiore al consentito");
+            //}
 
             return result;
         }

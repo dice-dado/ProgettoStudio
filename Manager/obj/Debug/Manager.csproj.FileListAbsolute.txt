@@ -1,0 +1,13 @@
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\obj\Debug\Manager.csproj.AssemblyReference.cache
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\obj\Debug\Manager.csproj.CoreCompileInputs.cache
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\bin\Debug\Manager.dll
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\bin\Debug\Manager.pdb
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\bin\Debug\Engine.dll
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\bin\Debug\Entity.dll
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\bin\Debug\IDal.dll
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\bin\Debug\Engine.pdb
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\bin\Debug\Entity.pdb
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\bin\Debug\IDal.pdb
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\obj\Debug\Manager.csproj.Up2Date
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\obj\Debug\Manager.dll
+C:\Users\e.radaelli\source\repos\ProgettoStudio\Manager\obj\Debug\Manager.pdb

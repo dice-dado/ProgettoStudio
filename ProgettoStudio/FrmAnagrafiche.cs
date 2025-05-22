@@ -1,5 +1,5 @@
-﻿using Engine;
-using Entity;
+﻿using Entity;
+using Manager;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,12 +15,13 @@ namespace ProgettoStudio
 {
     public partial class FrmAnagrafiche : Form
     {
-
-        private AnagraficaEntity mEntity;
+        public AnagraficheManager Manager { get; set; }
 
         public FrmAnagrafiche()
         {
             InitializeComponent();
+
+            Manager = new AnagraficheManager();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -33,14 +34,14 @@ namespace ProgettoStudio
             riferimentiDataGridView.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
             riferimentiDataGridView.ReadOnly = false;
 
-            mEntity = new AnagraficaEntity();
         }
 
         public void ShowModal(AnagraficaEntity entity)
         {
             if (entity != null)
             {
-                this.mEntity = entity;
+                Manager.Init(entity);
+
 
                 idTextBox.Text = entity?.IdAnagrafica.ToString();
                 ragioneSocialeTextBox.Text = entity?.RagioneSociale;
@@ -48,14 +49,22 @@ namespace ProgettoStudio
                 indirizzoTextBox.Text = entity?.Indirizzo;
                 telefonoTextBox.Text = entity?.Telefono;
 
-
-                AnagraficheEngine engineBase = new AnagraficheEngine();
-                AnagraficaEntity entityDB = (AnagraficaEntity)engineBase.Read(entity.IdAnagrafica.ToString());
+                AnagraficaEntity entityDB = (AnagraficaEntity)Manager.Read<AnagraficaEntity>(entity.IdAnagrafica.ToString());
 
                 riferimentiDataGridView.DataSource = entityDB.Riferimenti;
                 riferimentiDataGridView.Refresh();
+
+                idTextBox.ReadOnly = true;
+
             }
-            
+            else
+            {
+                Manager.Init(new AnagraficaEntity());
+
+                riferimentiDataGridView.DataSource = ((AnagraficaEntity)Manager.Entity).Riferimenti;
+                idTextBox.ReadOnly = false;
+            }
+
 
             this.ShowDialog();
         }
@@ -63,33 +72,20 @@ namespace ProgettoStudio
         private void SaveButton_Click(object sender, EventArgs e)
         {
 
-            AnagraficheEngine engineBase = new AnagraficheEngine();
+            ((AnagraficaEntity)Manager.Entity).IdAnagrafica = int.Parse(idTextBox.Text);
+            ((AnagraficaEntity)Manager.Entity).RagioneSociale = ragioneSocialeTextBox.Text;
+            ((AnagraficaEntity)Manager.Entity).PartitaIVA = partitaIVATextBox.Text;
+            ((AnagraficaEntity)Manager.Entity).Indirizzo = indirizzoTextBox.Text;
+            ((AnagraficaEntity)Manager.Entity).Telefono = telefonoTextBox.Text;
 
+            var errors = Manager.OnSave();
 
-            mEntity.IdAnagrafica = int.Parse(idTextBox.Text);
-            mEntity.RagioneSociale = ragioneSocialeTextBox.Text;
-            mEntity.PartitaIVA = partitaIVATextBox.Text;
-            mEntity.Indirizzo = indirizzoTextBox.Text;
-            mEntity.Telefono = telefonoTextBox.Text;
-
-            mEntity.Riferimenti.Clear();
-
-            foreach (var rif in (IEnumerable<RiferimentoEntity>)riferimentiDataGridView.DataSource ?? Enumerable.Empty<RiferimentoEntity>())
+            if (errors.Count() > 0)
             {
-                var riferimento = new RiferimentoEntity
-                {
-                    Nome = rif.Nome,
-                    Cognome = rif.Cognome,
-                    Telefono = rif.Telefono
-                };
-
-                mEntity.Riferimenti.Add(riferimento);
+                //ShowModal();
             }
-            
-            engineBase.Update(this.mEntity);
-
-            this.Close();
-
+            else
+                this.Close();
         }
 
         private void label1_Click(object sender, EventArgs e)
