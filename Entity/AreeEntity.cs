@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -53,6 +54,13 @@ namespace Entity
 
         public override bool IsValid()
         {
+            if (string.IsNullOrEmpty(mCodice) || string.IsNullOrEmpty(mDescrizione))
+            {
+                return false;            
+            }
+            if (mCodice == "XX")
+                throw new Exception("Codice XX non è valido per le Aree");            
+
             return true;
         }
     }

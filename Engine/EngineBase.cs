@@ -19,19 +19,21 @@ namespace Engine
         public virtual List<string> Update(EntityBase entity)
         {
             var errorList = new List<string>();
-            
-            errorList.AddRange(CheckUpdate(entity));
 
-            if (errorList.Count==0)
+            //Prima controllo validità entity (nel contesto client-server, la faccio due volte: una lato manager, prima dell'invio, e una lato server alla ricezione)
+            if (entity.IsValid())
             {
-                if (entity.IsValid())
+                errorList.AddRange(CheckUpdate(entity));
+
+                if (errorList.Count == 0)
                 {
                     var dataLayer = DALFactory.Create();
-
-                    dataLayer.Update(entity);
-                }
-                else
-                    errorList.Add("IsValid() error");
+                    errorList.AddRange(dataLayer.Update(entity));
+                }                
+            }
+            else
+            {
+                errorList.Add("IsValid() error");
             }
 
             return errorList;

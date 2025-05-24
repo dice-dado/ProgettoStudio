@@ -96,25 +96,23 @@ namespace Entity
 
         public AnagraficaEntity( int idAnagrafica, string ragioneSociale, string partitaIVA, string indirizzo, string telefono)
         {
-            IdAnagrafica = idAnagrafica;
-            RagioneSociale = ragioneSociale;
-            PartitaIVA = partitaIVA;
-            Indirizzo = indirizzo;
-            Telefono = telefono;
+            mIdAnagrafica = idAnagrafica;
+            mRagioneSociale = ragioneSociale;
+            mPartitaIVA = partitaIVA;
+            mIndirizzo = indirizzo;
+            mTelefono = telefono;
 
         }
 
         public void AddRiferimento(RiferimentoEntity riferimento, bool unchanged)
         {
-            Riferimenti.Add(riferimento);
-            
+            Riferimenti.Add(riferimento);                        
         }
 
 
         public void SetRiferimenti(BindingList<RiferimentoEntity> riferimenti, bool unchanged)
         {
             Riferimenti = riferimenti;
-
         }
 
         public AnagraficaEntity()
@@ -138,7 +136,7 @@ namespace Entity
         public override bool IsValid()
         {
             if (string.IsNullOrWhiteSpace(RagioneSociale))
-                throw new InvalidOperationException("La ragione sociale non può essere vuota (XX).");
+                throw new InvalidOperationException("La ragione sociale non può essere vuota.");
 
             return !string.IsNullOrWhiteSpace(PartitaIVA);
         }

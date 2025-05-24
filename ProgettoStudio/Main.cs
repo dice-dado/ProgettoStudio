@@ -55,7 +55,7 @@ namespace ProgettoStudio
                 var elenco = frmAnagrafica.ReadAll<AnagraficaEntity>(); 
                 return elenco.Filter(filter); 
             };
-            frmElenco.EditDelegate += (EntityBase entity) => 
+            frmElenco.EditDelegate = (EntityBase entity) => 
             {                                               
                 frmAnagrafica.ShowModal((AnagraficaEntity)entity);                
             };            

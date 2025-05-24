@@ -18,13 +18,15 @@ namespace ProgettoStudio
 {
     public partial class FrmAree : Form, ICardForm
     {
-        private readonly AreeManager mManager;     
+        private readonly AreeManager mManager;
+        private readonly IDialogService mDialogSerivice;
 
         public FrmAree()
         {
             InitializeComponent();
 
-            mManager = new AreeManager(new DialogService());            
+            mDialogSerivice = new DialogService();
+            mManager = new AreeManager(mDialogSerivice);            
         }
 
         protected override void OnLoad(EventArgs e)
@@ -50,10 +52,8 @@ namespace ProgettoStudio
             BindControl(codiceTextBox, entity, nameof(AreeEntity.Codice));
             BindControl(descrizioneTextBox, entity, nameof(AreeEntity.Descrizione));
 
-
             mManager.Init(entity);
             
-
             this.ShowDialog();
         }
 
@@ -64,7 +64,7 @@ namespace ProgettoStudio
 
             if (errors.Count() > 0)
             {
-                //ShowModal();
+                mDialogSerivice.ShowMessageBox(string.Join(Environment.NewLine, errors));
             }
             else
                 this.Close();
@@ -77,7 +77,7 @@ namespace ProgettoStudio
                 this.Close();
         }
 
-        public static void BindControl(Control control, object dataSource, string propertyName)
+        private void BindControl(Control control, object dataSource, string propertyName)
         {
             control.DataBindings.Clear();
             control.DataBindings.Add("Text", dataSource, propertyName, true, DataSourceUpdateMode.OnPropertyChanged);

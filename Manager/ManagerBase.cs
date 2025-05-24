@@ -27,14 +27,19 @@ namespace Manager
         
         public virtual void Init(EntityBase entity)
         {
-            if (entity != null)
+            if (entity == null)
+            {
+                throw new ArgumentNullException("Inizializzare sempre la Entity prima Init() del Manager");             
+            }
+            else
+            {
                 Entity = entity;
-
-            entity.EntityState = EntityState.Unchanged;
+            }
             
+            //master
             Entity.PropertyChanged += DataChangedCaller;
-
-            SubscribeListItemsPropertyChanged(entity, DataSlaveChangedCaller);
+            //slaves
+            SubscribeListItemsPropertyChanged(entity);
         }
 
         public virtual EntityBase Read<T>(object pk) where T : EntityBase
@@ -50,26 +55,26 @@ namespace Manager
 
         protected abstract EngineBase GetEngine();
 
-        protected void DataChangedCaller(object sender, PropertyChangedEventArgs e)
-        {
+        private void DataChangedCaller(object sender, PropertyChangedEventArgs e)
+        {            
             OnDataChanged(e.PropertyName);
-        
         }
         
-        protected void DataSlaveChangedCaller(object sender, PropertyChangedEventArgs e)
+        private void DataSlaveChangedCaller(object sender, PropertyChangedEventArgs e)
         {
             OnDataSlaveChanged((BindableEntity)sender, e.PropertyName);
-        
         }
-        
+
+
         protected virtual void OnDataChanged(string property)
-        {        
+        {
             
         }
 
         protected virtual void OnDataSlaveChanged(BindableEntity row, string property)
         {
-            Entity.EntityState = EntityState.Modified;
+            if (Entity.EntityState != EntityState.Added)
+                Entity.EntityState = EntityState.Modified;
         }
 
         public virtual List<string> OnSave()
@@ -77,27 +82,47 @@ namespace Manager
             return Engine.Update(Entity);        
         }
          
-        private void SubscribeListItemsPropertyChanged(object target, PropertyChangedEventHandler handler)
-        {        
+        private void SubscribeListItemsPropertyChanged(object target)
+        {
+
+            /*
+                Vado ad assegnare DataSlaveChanged a tutti gli item delle prop che implementano IBindableList
+             */
             var props = target.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
             foreach (var prop in props)
             {               
-                if (typeof(IList).IsAssignableFrom(prop.PropertyType))
+                if (typeof(IBindingList).IsAssignableFrom(prop.PropertyType))
                 {
-                    if (!(prop.GetValue(target) is IList list))
+                    if (!(prop.GetValue(target) is IBindingList list))
                         continue;
 
+                    list.ListChanged += HandleListChanged;
+                    //se aggiungo poi questo è un problema, devo fare ri-scattare questa assegnazione, ho bisogno di HandleListChanged
                     foreach (var item in list)
                     {
                         if (item is INotifyPropertyChanged npc && item is BindableEntity)
                         {
-                            npc.PropertyChanged += handler;
+                            npc.PropertyChanged += DataSlaveChangedCaller;
                         }
                     }
                 }
             }
         }
+
+        private void HandleListChanged(object sender, ListChangedEventArgs e)
+        {
+            if (e.ListChangedType == ListChangedType.ItemAdded)
+            {
+                var list =(IBindingList)sender;
+                var newItem = (INotifyPropertyChanged)list[e.NewIndex];
+
+                newItem.PropertyChanged += DataSlaveChangedCaller;                
+            }
+        }
+
+
+
 
         public List<string> Action(string action)
         {

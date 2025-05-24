@@ -17,12 +17,15 @@ namespace ProgettoStudio
     public partial class FrmAnagrafiche : Form, ICardForm
     {
         private readonly AnagraficheManager mManager;
+        private readonly IDialogService mDialogSerivice;
+
 
         public FrmAnagrafiche()
         {
             InitializeComponent();
 
-            mManager = new AnagraficheManager(new DialogService());
+            mDialogSerivice = new DialogService();
+            mManager = new AnagraficheManager(mDialogSerivice);
         }
 
         protected override void OnLoad(EventArgs e)
@@ -36,11 +39,11 @@ namespace ProgettoStudio
             riferimentiDataGridView.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
             riferimentiDataGridView.ReadOnly = false;
 
-        }
+        }        
 
         public void ShowModal(EntityBase entity)
         {
-            if (entity != null)
+            if (entity.EntityState == EntityState.Unchanged)
             {
                 AnagraficaEntity entityDB = (AnagraficaEntity)mManager.Read<AnagraficaEntity>(((AnagraficaEntity)entity).IdAnagrafica.ToString());
 
@@ -53,9 +56,9 @@ namespace ProgettoStudio
                 idTextBox.ReadOnly = true;
 
             }
-            else
+            else if(entity.EntityState == EntityState.Added)
             {
-                mManager.Init(new AnagraficaEntity());
+                mManager.Init(entity);
 
                 riferimentiDataGridView.DataSource = ((AnagraficaEntity)mManager.Entity).Riferimenti;
                 idTextBox.ReadOnly = false;
@@ -78,12 +81,11 @@ namespace ProgettoStudio
 
             if (errors.Count() > 0)
             {
-                //ShowModal();
+                mDialogSerivice.ShowMessageBox(string.Join(Environment.NewLine, errors));
             }
             else
                 this.Close();
         }
-
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
@@ -92,7 +94,7 @@ namespace ProgettoStudio
                 this.Close();
         }
 
-        public static void BindControl(Control control, object dataSource, string propertyName)
+        private void BindControl(Control control, object dataSource, string propertyName)
         {
             control.DataBindings.Clear();
             control.DataBindings.Add("Text", dataSource, propertyName, true, DataSourceUpdateMode.OnPropertyChanged);
@@ -102,5 +104,7 @@ namespace ProgettoStudio
         {
             return mManager.ReadAll<T>();
         }
+
+
     }
 }

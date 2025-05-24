@@ -45,24 +45,35 @@ namespace ProgettoStudio
          
         private void NewButton_Click(object sender, EventArgs e)
         {
-            EditDelegate(null);
+            var list = dataGridView.DataSource as IEnumerable;
+            var item = list?.Cast<object>().FirstOrDefault();
+            EntityBase entity;
+            
+            Type tipo = item.GetType();
+            object nuovaIstanza = Activator.CreateInstance(tipo);
+
+            entity = (EntityBase)nuovaIstanza;
+            
+            entity.EntityState = EntityState.Added;
+                        
+            EditDelegate(entity);
             dataGridView.DataSource = FilterRefreshDelegate(null);
         }
 
         private void DataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            var grid = sender as DataGridView;
-
-            if (grid != null && e.RowIndex >= 0)
+            if (sender is DataGridView grid && e.RowIndex >= 0)
             {
                 var row = grid.Rows[e.RowIndex];
                 var item = row.DataBoundItem;
-       
-                EditDelegate((EntityBase)item);
+
+                var entity = (EntityBase)item;
+                entity.EntityState = EntityState.Unchanged;
+
+                EditDelegate(entity);
                 dataGridView.DataSource = FilterRefreshDelegate(null);
 
             }
-
         }
 
         private void Filtra_Click(object sender, EventArgs e)

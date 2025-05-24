@@ -44,8 +44,11 @@ namespace XmlDal
                     {
                         string codice = area.Attribute("Codice")?.Value;
                         string descrizione = area.Attribute("Descrizione")?.Value;
-                        if(codice == pkValue.ToString())
-                            return (T)(object)new AreeEntity(codice, descrizione);
+                        if (codice == pkValue.ToString())
+                        {
+                            return (T)(object)new AreeEntity(codice, descrizione) { EntityState = EntityState.Unchanged };                            
+                        }
+                            
                     }
                 }
 
@@ -83,7 +86,8 @@ namespace XmlDal
 
                             anagraficaCorrente.AddRiferimento(riferimentoCorrente, true);
                         }
-
+                        
+                        anagraficaCorrente.EntityState = EntityState.Unchanged;
                         return (T)(object)anagraficaCorrente;
                     }
                 }
@@ -128,8 +132,8 @@ namespace XmlDal
 
                     foreach (var anagrafica in anagrafiche)
                     {
-                        var anagraficaCorrente = new AnagraficaEntity
-                        (
+                        var anagraficaCorrente = new AnagraficaEntity(
+                        
                             (int?)anagrafica.Attribute("IdAnagrafica") ?? 0,
                             anagrafica.Attribute("RagioneSociale")?.Value,
                             anagrafica.Attribute("PartitaIva")?.Value,
@@ -147,7 +151,7 @@ namespace XmlDal
                                 riferimento.Attribute("Telefono")?.Value
                             );
 
-                            anagraficaCorrente.Riferimenti.Add(riferimentoCorrente);
+                            anagraficaCorrente.AddRiferimento(riferimentoCorrente, true);
                         }
                         
                         anagraficheEntities.Add(anagraficaCorrente);
@@ -163,7 +167,7 @@ namespace XmlDal
 
         public List<string> Update(EntityBase entity)
         {
-            var list = new List<string>();
+            var errorList = new List<string>();
 
             if (entity is AreeEntity areeEntity)
             {
@@ -177,7 +181,12 @@ namespace XmlDal
                     {
                         string codice = area.Attribute("Codice")?.Value;
                         if (codice == areeEntity.Codice)
-                        { 
+                        {
+                            if (areeEntity.EntityState == EntityState.Added)
+                            {
+                                errorList.Add("Codice Duplicato");
+                                return errorList;
+                            }
                             area.SetAttributeValue("Descrizione", areeEntity.Descrizione);
                             found = true;
                             break;
@@ -196,7 +205,7 @@ namespace XmlDal
                 }
 
                 mDoc.Save("XMLData.xml");
-                return list;
+                return errorList;
 
             }
             else if (entity is AnagraficaEntity anagraficaEntity)
@@ -214,6 +223,12 @@ namespace XmlDal
 
                         if (id == anagraficaEntity.IdAnagrafica.ToString())
                         {
+                            if (anagraficaEntity.EntityState == EntityState.Added)
+                            {
+                                errorList.Add("Codice Duplicato");
+                                return errorList;
+                            }
+
                             found = true;
 
                             anagrafica.SetAttributeValue("IdAnagrafica", anagraficaEntity.IdAnagrafica);
@@ -266,10 +281,10 @@ namespace XmlDal
                 }
 
                 mDoc.Save("XMLData.xml");
-                return list;
+                return errorList;
             }
 
-            else return list;
+            else return errorList;
         }
     }
 }

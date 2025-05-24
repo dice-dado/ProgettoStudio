@@ -12,7 +12,9 @@ namespace Entity
         public EntityBase() 
         {
             base.PropertyChanged += (sender, e) => { 
-                EntityState = EntityState.Modified; 
+                
+                if(EntityState != EntityState.Added)
+                    EntityState = EntityState.Modified; 
             };
         
         } 

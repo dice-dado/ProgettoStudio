@@ -17,6 +17,10 @@
             {
                 components.Dispose();
             }
+
+            saveButton.Click -= SaveButton_Click;
+            cancelButton.Click -= CancelButton_Click;
+
             base.Dispose(disposing);
         }
 
