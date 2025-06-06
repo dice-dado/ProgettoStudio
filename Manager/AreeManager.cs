@@ -20,7 +20,7 @@ namespace Manager
 
         protected override EngineBase GetEngine()
         {
-            throw new NotImplementedException();
+            return Engine;
         }
 
         protected override void OnDataChanged(string property)

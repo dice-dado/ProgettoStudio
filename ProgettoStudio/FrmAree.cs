@@ -32,10 +32,7 @@ namespace ProgettoStudio
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            
-            saveButton.Click += SaveButton_Click;
-            cancelButton.Click += CancelButton_Click;
-            
+                        
         }
 
         public void ShowModal(EntityBase entity)
@@ -49,11 +46,16 @@ namespace ProgettoStudio
                 entity = new AreeEntity();    
             }
 
-            BindControl(codiceTextBox, entity, nameof(AreeEntity.Codice));
-            BindControl(descrizioneTextBox, entity, nameof(AreeEntity.Descrizione));
-
             mManager.Init(entity);
-            
+
+            codiceTextBox.DataBindings.Clear();
+            descrizioneTextBox.DataBindings.Clear();
+
+            BindTextOfControl(codiceTextBox, mManager.Entity, nameof(AreeEntity.Codice));
+            BindTextOfControl(descrizioneTextBox, mManager.Entity, nameof(AreeEntity.Descrizione));
+
+            BindEnabledOfControl(codiceTextBox, mManager, nameof(ManagerBase.PKEnabled));
+
             this.ShowDialog();
         }
 
@@ -61,7 +63,7 @@ namespace ProgettoStudio
         {        
             var errors = mManager.OnSave();
 
-
+            //TBD spostare su manager
             if (errors.Count() > 0)
             {
                 mDialogSerivice.ShowMessageBox(string.Join(Environment.NewLine, errors));
@@ -77,10 +79,14 @@ namespace ProgettoStudio
                 this.Close();
         }
 
-        private void BindControl(Control control, object dataSource, string propertyName)
+        private void BindTextOfControl(Control control, object dataSource, string propertyName)
         {
-            control.DataBindings.Clear();
             control.DataBindings.Add("Text", dataSource, propertyName, true, DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        private void BindEnabledOfControl(Control control, object dataSource, string propertyName)
+        {            
+            control.DataBindings.Add("Enabled", dataSource, propertyName, true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
         public IEnumerable<T> ReadAll<T>() where T : EntityBase
@@ -88,5 +94,16 @@ namespace ProgettoStudio
             return mManager.ReadAll<T>();
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            mManager.Dispose();
+        }
+
+        public void ReadAllAsync<T>(Action<IEnumerable<T>> callback, Action<Exception> excCallback) where T : EntityBase
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -58,7 +58,6 @@
     <Compile Include="FrmAree.Designer.cs">
       <DependentUpon>FrmAree.cs</DependentUpon>
     </Compile>
-    <Compile Include="ICardForm.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -116,6 +115,10 @@
     <ProjectReference Include="..\Manager\Manager.csproj">
       <Project>{BB42E8CB-6449-4312-8E32-FC3B336800E3}</Project>
       <Name>Manager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\UI_Shared.csproj">
+      <Project>{245d9487-46b6-41f6-b27f-df943b3da543}</Project>
+      <Name>UI_Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

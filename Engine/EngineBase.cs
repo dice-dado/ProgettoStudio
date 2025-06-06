@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+
 namespace Engine
 {
     public abstract class EngineBase 
@@ -38,7 +39,7 @@ namespace Engine
 
             return errorList;
         }
-        public abstract List<string> CheckUpdate(EntityBase entity);        
-
+        public abstract List<string> CheckUpdate(EntityBase entity);
+        
     }
 }

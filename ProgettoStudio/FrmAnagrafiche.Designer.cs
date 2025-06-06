@@ -99,6 +99,9 @@
             this.saveButton.TabIndex = 6;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
+
+
+            saveButton.Click += SaveButton_Click;
             // 
             // cancelButton
             // 
@@ -108,6 +111,8 @@
             this.cancelButton.TabIndex = 7;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
+
+            cancelButton.Click += CancelButton_Click;
             // 
             // label1
             // 

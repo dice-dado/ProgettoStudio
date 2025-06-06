@@ -17,6 +17,10 @@
             {
                 components.Dispose();
             }
+
+            saveButton.Click -= SaveButton_Click;
+            cancelButton.Click -= CancelButton_Click;
+
             base.Dispose(disposing);
         }
 
@@ -76,6 +80,8 @@
             this.saveButton.TabIndex = 4;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
+
+            saveButton.Click += SaveButton_Click;
             // 
             // cancelButton
             // 
@@ -85,6 +91,8 @@
             this.cancelButton.TabIndex = 5;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
+
+            cancelButton.Click += CancelButton_Click;
             // 
             // FrmAree
             // 

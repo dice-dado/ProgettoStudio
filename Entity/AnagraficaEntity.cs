@@ -80,6 +80,7 @@ namespace Entity
             }
         }
 
+        //TBD da fare come list
         private BindingList<RiferimentoEntity> mRiferimenti = [];
         public BindingList<RiferimentoEntity> Riferimenti
         {

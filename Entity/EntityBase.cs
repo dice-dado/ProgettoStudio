@@ -11,6 +11,7 @@ namespace Entity
     {
         public EntityBase() 
         {
+            //TBD gestire il cambio sul manager
             base.PropertyChanged += (sender, e) => { 
                 
                 if(EntityState != EntityState.Added)

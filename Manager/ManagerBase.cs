@@ -1,5 +1,6 @@
 ﻿using Engine;
 using Entity;
+using Shared.Helpers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,18 +8,35 @@ using System.ComponentModel;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Manager
 {
-    public abstract class ManagerBase
+    public abstract class ManagerBase : INotifyPropertyChanged, IDisposable
     {
+
+        private bool mPKEnabled;
+        public bool PKEnabled
+        {
+            get { return mPKEnabled; }
+            set
+            {
+                if (mPKEnabled != value)
+                {
+                    mPKEnabled = value;
+                    RaiseNotifyPropertyChanged(nameof(PKEnabled));
+                }
+            }
+        }
+
         public virtual EntityBase Entity { get; set; }
         protected EngineBase Engine { get; set; }
 
         protected IDialogService mDialogService;
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected ManagerBase(IDialogService service) 
         {
@@ -35,11 +53,13 @@ namespace Manager
             {
                 Entity = entity;
             }
+
+            PKEnabled = entity.EntityState == EntityState.Added;
             
             //master
-            Entity.PropertyChanged += DataChangedCaller;
+            Entity.PropertyChanged += DataChangedCaller;            
             //slaves
-            SubscribeListItemsPropertyChanged(entity);
+            SubscribeListItemsPropertyChanged(entity, true);
         }
 
         public virtual EntityBase Read<T>(object pk) where T : EntityBase
@@ -53,6 +73,24 @@ namespace Manager
             return Engine.ReadAll<T>();
         }
 
+        public void ReadAllAsync<T>(Action<IEnumerable<T>> callback, Action<Exception> excCallback) where T : EntityBase
+        { 
+            AsyncHelper.CallAsync(() => ReadAll<T>(), callback, excCallback);
+        }
+
+        public void ActionAsync(string action, Action<List<string>> callback, Action<Exception> excCallback)
+        {
+            try
+            {
+                var result = Action(action);
+                callback?.Invoke(result);
+            }
+            catch (Exception ex)
+            {
+                excCallback?.Invoke(ex);
+            }
+        }
+
         protected abstract EngineBase GetEngine();
 
         private void DataChangedCaller(object sender, PropertyChangedEventArgs e)
@@ -64,8 +102,6 @@ namespace Manager
         {
             OnDataSlaveChanged((BindableEntity)sender, e.PropertyName);
         }
-
-
         protected virtual void OnDataChanged(string property)
         {
             
@@ -78,11 +114,15 @@ namespace Manager
         }
 
         public virtual List<string> OnSave()
-        { 
-            return Engine.Update(Entity);        
+        {
+            if (Entity.EntityState != EntityState.Unchanged)
+            {
+                return Engine.Update(Entity);
+            }
+            else return new List<string>();
         }
          
-        private void SubscribeListItemsPropertyChanged(object target)
+        private void SubscribeListItemsPropertyChanged(object target, bool subscribe)
         {
 
             /*
@@ -96,14 +136,20 @@ namespace Manager
                 {
                     if (!(prop.GetValue(target) is IBindingList list))
                         continue;
+                    if(subscribe)
+                        list.ListChanged += HandleListChanged;
+                    else
+                        list.ListChanged -= HandleListChanged;
 
-                    list.ListChanged += HandleListChanged;
-                    //se aggiungo poi questo è un problema, devo fare ri-scattare questa assegnazione, ho bisogno di HandleListChanged
+                    //se aggiungo nuovo item poi questo è un problema, devo fare ri-scattare questa assegnazione, ho bisogno di HandleListChanged
                     foreach (var item in list)
                     {
                         if (item is INotifyPropertyChanged npc && item is BindableEntity)
                         {
-                            npc.PropertyChanged += DataSlaveChangedCaller;
+                            if(subscribe)
+                                npc.PropertyChanged += DataSlaveChangedCaller;
+                            else
+                                npc.PropertyChanged -= DataSlaveChangedCaller;
                         }
                     }
                 }
@@ -120,9 +166,6 @@ namespace Manager
                 newItem.PropertyChanged += DataSlaveChangedCaller;                
             }
         }
-
-
-
 
         public List<string> Action(string action)
         {
@@ -148,5 +191,16 @@ namespace Manager
             return new List<string>();
         }
 
+        protected void RaiseNotifyPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void Dispose()
+        {
+            Entity.PropertyChanged -= DataChangedCaller;
+
+            SubscribeListItemsPropertyChanged(Entity, false);
+        }
     }
 }

@@ -20,3 +20,7 @@
 **/bin/Release/*.dll
 **/obj/Debug/*.dll
 **/obj/Release/*.dll
+
+# Ignora contenuto Debug
+**/bin/Debug/
+**/obj/Debug/

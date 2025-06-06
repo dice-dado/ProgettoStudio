@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ProgettoStudio
 {
@@ -18,7 +19,6 @@ namespace ProgettoStudio
     {
         private readonly AnagraficheManager mManager;
         private readonly IDialogService mDialogSerivice;
-
 
         public FrmAnagrafiche()
         {
@@ -32,15 +32,10 @@ namespace ProgettoStudio
         {
             base.OnLoad(e);
 
-            saveButton.Click += SaveButton_Click;
-            cancelButton.Click += CancelButton_Click;
-
             riferimentiDataGridView.AllowUserToAddRows = true;
             riferimentiDataGridView.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
-            riferimentiDataGridView.ReadOnly = false;
 
         }        
-
         public void ShowModal(EntityBase entity)
         {
             if (entity.EntityState == EntityState.Unchanged)
@@ -53,8 +48,6 @@ namespace ProgettoStudio
                 riferimentiDataGridView.DataSource = ((AnagraficaEntity)entity).Riferimenti;
                 riferimentiDataGridView.Refresh();
 
-                idTextBox.ReadOnly = true;
-
             }
             else if(entity.EntityState == EntityState.Added)
             {
@@ -64,16 +57,23 @@ namespace ProgettoStudio
                 idTextBox.ReadOnly = false;
             }
 
-            BindControl(idTextBox, entity, nameof(AnagraficaEntity.IdAnagrafica));
-            BindControl(ragioneSocialeTextBox, entity, nameof(AnagraficaEntity.RagioneSociale));
-            BindControl(partitaIVATextBox, entity, nameof(AnagraficaEntity.PartitaIVA));
-            BindControl(indirizzoTextBox, entity, nameof(AnagraficaEntity.Indirizzo));
-            BindControl(telefonoTextBox, entity, nameof(AnagraficaEntity.Telefono));
 
+            idTextBox.DataBindings.Clear();
+            ragioneSocialeTextBox.DataBindings.Clear();
+            partitaIVATextBox.DataBindings.Clear();
+            indirizzoTextBox.DataBindings.Clear();
+            telefonoTextBox.DataBindings.Clear();
+
+            BindTextOfControl(idTextBox, mManager.Entity, nameof(AnagraficaEntity.IdAnagrafica));
+            BindTextOfControl(ragioneSocialeTextBox, mManager.Entity, nameof(AnagraficaEntity.RagioneSociale));
+            BindTextOfControl(partitaIVATextBox, mManager.Entity, nameof(AnagraficaEntity.PartitaIVA));
+            BindTextOfControl(indirizzoTextBox, mManager.Entity, nameof(AnagraficaEntity.Indirizzo));
+            BindTextOfControl(telefonoTextBox, mManager.Entity, nameof(AnagraficaEntity.Telefono));
+
+            BindEnabledOfControl(idTextBox, mManager, nameof(ManagerBase.PKEnabled));
 
             this.ShowDialog();
         }
-
         private void SaveButton_Click(object sender, EventArgs e)
         {
 
@@ -86,25 +86,35 @@ namespace ProgettoStudio
             else
                 this.Close();
         }
-
         private void CancelButton_Click(object sender, EventArgs e)
         {
             string res = (mManager.Action("Cancel").FirstOrDefault() ?? "");
             if (res == "Yes" || res == string.Empty)
                 this.Close();
         }
-
-        private void BindControl(Control control, object dataSource, string propertyName)
+        private void BindTextOfControl(Control control, object dataSource, string propertyName)
         {
-            control.DataBindings.Clear();
             control.DataBindings.Add("Text", dataSource, propertyName, true, DataSourceUpdateMode.OnPropertyChanged);
         }
-
+        private void BindEnabledOfControl(Control control, object dataSource, string propertyName)
+        {
+            control.DataBindings.Add("Enabled", dataSource, propertyName, true, DataSourceUpdateMode.OnPropertyChanged);
+        }
         public IEnumerable<T> ReadAll<T>() where T : EntityBase
         {
             return mManager.ReadAll<T>();
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
 
+            mManager.Dispose();
+        }
+
+        public void ReadAllAsync<T>(Action<IEnumerable<T>> callback, Action<Exception> excCallback) where T : EntityBase
+        {
+            throw new NotImplementedException();
+        }
     }
 }

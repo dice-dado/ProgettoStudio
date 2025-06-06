@@ -27,6 +27,18 @@ namespace ProgettoStudio
             Application.Run(new Form1());
         }
 
+        /*
+         
+        CurrentDomain vs Application Exception:
+
+             Se fai throw new Exception("errore") dentro un button.Click, verrà intercettato da Application_ThreadException.
+
+             Se invece fai Task.Run(() => throw new Exception("errore")), e non gestisci l’eccezione, la intercetterà CurrentDomain_UnhandledException.
+
+        Application.ThreadException	UI thread	Il programma continua a funzionare
+
+        AppDomain.CurrentDomain.UnhandledException	Non-UI thread o eccezioni globali	Il programma termina (salvo gestione avanzata)             
+         */
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {

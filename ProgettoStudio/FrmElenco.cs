@@ -25,7 +25,6 @@ namespace ProgettoStudio
         public FrmElenco()
         {
             InitializeComponent();
-
         }
 
         protected override void OnLoad(EventArgs e)

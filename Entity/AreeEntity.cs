@@ -60,6 +60,8 @@ namespace Entity
             }
             if (mCodice == "XX")
                 throw new Exception("Codice XX non è valido per le Aree");            
+            
+            //TBD NU entità non valida
 
             return true;
         }
