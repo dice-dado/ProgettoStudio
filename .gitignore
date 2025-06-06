@@ -13,3 +13,10 @@
 /ProgettoStudio/obj/Debug
 /XmlDal/bin/Debug
 /XmlDal/obj/Debug
+
+
+# Ignora DLL in Debug/Release
+**/bin/Debug/*.dll
+**/bin/Release/*.dll
+**/obj/Debug/*.dll
+**/obj/Release/*.dll
