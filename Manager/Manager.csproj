@@ -44,7 +44,6 @@
     <Compile Include="AnagraficheManager.cs" />
     <Compile Include="AreeManager.cs" />
     <Compile Include="Helpers\AsyncHelper.cs" />
-    <Compile Include="IDialogService.cs" />
     <Compile Include="ManagerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -56,6 +55,10 @@
     <ProjectReference Include="..\Entity\Entity.csproj">
       <Project>{a93edf4c-d4d0-4230-b99f-2839b72bc7b1}</Project>
       <Name>Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\UI_Shared.csproj">
+      <Project>{245d9487-46b6-41f6-b27f-df943b3da543}</Project>
+      <Name>UI_Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

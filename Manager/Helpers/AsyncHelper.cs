@@ -10,7 +10,7 @@ namespace Shared.Helpers
 {
     public static class AsyncHelper
     {
-        public static void CallAsync<T>( Func<T> work, Action<T> callback, Action<Exception> excCallback)
+        public static void CallAsync<T>(Func<T> work, Action<T> callback, Action<Exception> excCallback)
         {
             var operation = AsyncOperationManager.CreateOperation(null);
             ThreadPool.QueueUserWorkItem((x) =>

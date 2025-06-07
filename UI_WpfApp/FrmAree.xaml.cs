@@ -1,5 +1,7 @@
 ﻿using Entity;
+using Manager;
 using ProgettoStudio;
+using ProgettoStudio.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,24 +24,31 @@ namespace UI_WpfApp
     /// </summary>
     public partial class FrmAree : Window, ICardForm
     {
+        private readonly AreeManager mManager;
+        private readonly IDialogService mDialogSerivice;
+
         public FrmAree()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            mDialogSerivice = new DialogService();
+            mManager = new AreeManager(mDialogSerivice);
         }
 
         public IEnumerable<T> ReadAll<T>() where T : EntityBase
         {
-            throw new NotImplementedException();
+            return mManager.ReadAll<T>();
         }
 
         public void ReadAllAsync<T>(Action<IEnumerable<T>> callback, Action<Exception> excCallback) where T : EntityBase
         {
-            throw new NotImplementedException();
+            mManager.ReadAllAsync<T>(callback, excCallback);
         }
+
 
         public void ShowModal(EntityBase entity)
         {
             throw new NotImplementedException();
         }
+
     }
 }

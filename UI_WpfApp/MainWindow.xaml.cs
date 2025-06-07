@@ -31,6 +31,7 @@ namespace UI_WpfApp
 
         private void MenuItemClick(object sender, RoutedEventArgs e)
         {
+
             var clickedItem = (string)((Button)sender).Content;
             switch (clickedItem)
             { 
@@ -38,25 +39,43 @@ namespace UI_WpfApp
                     FrmElenco frmElenco = new FrmElenco();
                     var frmArea = new FrmAree() as ICardForm;
 
-                    frmElenco.FilterRefreshDelegate = (filter) => 
-                    {
-                        var elenco = frmArea.ReadAll<AreeEntity>();
-                        return elenco.Filter(filter);
-                    };
+                    frmElenco.Show();                    
+                    frmArea.ReadAllAsync<AreeEntity>(callback<AreeEntity>, ExcCallback);
+
+                    void callback<T>(IEnumerable<T> elenco)
+                    {                        
+                        frmElenco.Elenco.ItemsSource = elenco.Cast<AreeEntity>();                        
+                    }
+
                     frmElenco.EditDelegate = (EntityBase entity) =>
                     {
                         frmArea.ShowModal((AreeEntity)entity);
                     };
 
-                    frmElenco.ShowDialog();
+
                     break;
 
                 case "Aree (Sync)":     
                     break;
+
                 case "Anagrafiche":
                     break;
             }
 
+        }
+
+
+
+
+        void Callback<T>(IEnumerable<T> result)
+        {
+            
+
+        }
+
+        void ExcCallback(Exception ex)
+        {
+            
         }
     }
 }

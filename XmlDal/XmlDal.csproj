@@ -66,6 +66,11 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(TargetDir)XmlDal.dll" "$(SolutionDir)ProgettoStudio\Bin\Debug" /Y /E
-xcopy "$(TargetDir)Data\XMLData.xml" "$(SolutionDir)ProgettoStudio\Bin\Debug" /Y /E</PostBuildEvent>
+xcopy "$(TargetDir)Data\XMLData.xml" "$(SolutionDir)ProgettoStudio\Bin\Debug" /Y /E
+
+
+xcopy "$(TargetDir)XmlDal.dll" "$(SolutionDir)UI_WpfApp\Bin\Debug" /Y /E
+xcopy "$(TargetDir)Data\XMLData.xml" "$(SolutionDir)UI_WpfApp\Bin\Debug" /Y /E
+</PostBuildEvent>
   </PropertyGroup>
 </Project>

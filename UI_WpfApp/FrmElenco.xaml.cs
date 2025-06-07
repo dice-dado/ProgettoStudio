@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -30,6 +31,19 @@ namespace UI_WpfApp
         {
             InitializeComponent();
 
+
+
+        }
+
+        protected override void OnRender(DrawingContext drawingContext)
+        {
+            base.OnRender(drawingContext);
+
+
+            if (FilterRefreshDelegate != null)
+            {
+                Elenco.ItemsSource = FilterRefreshDelegate(null);
+            }
         }
 
       
