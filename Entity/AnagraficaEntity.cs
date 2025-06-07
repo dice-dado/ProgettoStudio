@@ -80,9 +80,8 @@ namespace Entity
             }
         }
 
-        //TBD da fare come list
-        private BindingList<RiferimentoEntity> mRiferimenti = [];
-        public BindingList<RiferimentoEntity> Riferimenti
+        private List<RiferimentoEntity> mRiferimenti = [];
+        public List<RiferimentoEntity> Riferimenti
         {
             get { return mRiferimenti; }
             set
@@ -111,7 +110,7 @@ namespace Entity
         }
 
 
-        public void SetRiferimenti(BindingList<RiferimentoEntity> riferimenti, bool unchanged)
+        public void SetRiferimenti(List<RiferimentoEntity> riferimenti, bool unchanged)
         {
             Riferimenti = riferimenti;
         }

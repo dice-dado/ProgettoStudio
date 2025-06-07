@@ -33,11 +33,14 @@ namespace UI_WpfApp
         {
 
             var clickedItem = (string)((Button)sender).Content;
+            FrmElenco frmElenco;
+
             switch (clickedItem)
-            { 
+            {
+               
                 case "Aree":
                     var frmArea = new FrmAree() as ICardForm;
-                    var frmElenco = new FrmElenco(frmArea);
+                    frmElenco = new FrmElenco(frmArea);
                     frmElenco.FormType = typeof(AreeEntity);
 
                     frmElenco.Show();
@@ -45,10 +48,14 @@ namespace UI_WpfApp
 
                 case "Aree (Sync)":
                     
-
                     break;
 
                 case "Anagrafiche":
+                    var frmAnagrafiche = new FrmAnagrafiche() as ICardForm;
+                    frmElenco = new FrmElenco(frmAnagrafiche);
+                    frmElenco.FormType = typeof(AnagraficaEntity);
+
+                    frmElenco.Show();
                     break;
             }
 

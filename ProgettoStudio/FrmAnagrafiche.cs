@@ -45,7 +45,7 @@ namespace ProgettoStudio
                 ((AnagraficaEntity)entity).SetRiferimenti(entityDB.Riferimenti,true);
                 mManager.Init(entity);
 
-                riferimentiDataGridView.DataSource = ((AnagraficaEntity)entity).Riferimenti;
+                riferimentiDataGridView.DataSource = new BindingList<RiferimentoEntity>(((AnagraficaEntity)entity).Riferimenti);
                 riferimentiDataGridView.Refresh();
 
             }
@@ -53,7 +53,7 @@ namespace ProgettoStudio
             {
                 mManager.Init(entity);
 
-                riferimentiDataGridView.DataSource = ((AnagraficaEntity)mManager.Entity).Riferimenti;
+                riferimentiDataGridView.DataSource = new BindingList<RiferimentoEntity>(((AnagraficaEntity)mManager.Entity).Riferimenti);
                 idTextBox.ReadOnly = false;
             }
 
@@ -108,7 +108,7 @@ namespace ProgettoStudio
 
         public void ReadAllAsync<T>(Action<IEnumerable<T>> callback, Action<Exception> excCallback) where T : EntityBase
         {
-            throw new NotImplementedException();
+            mManager.ReadAllAsync<T>(callback, excCallback);
         }
     }
 }

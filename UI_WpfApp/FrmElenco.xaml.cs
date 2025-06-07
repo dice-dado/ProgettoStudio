@@ -103,6 +103,8 @@ namespace UI_WpfApp
 
                 mCard = newForm;
 
+                entity.EntityState = EntityState.Unchanged;
+
                 mCard.ShowModal(entity);
             }
                         
