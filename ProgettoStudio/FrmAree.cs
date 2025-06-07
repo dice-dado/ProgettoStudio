@@ -63,12 +63,7 @@ namespace ProgettoStudio
         {        
             var errors = mManager.OnSave();
 
-            //TBD spostare su manager
-            if (errors.Count() > 0)
-            {
-                mDialogSerivice.ShowMessageBox(string.Join(Environment.NewLine, errors));
-            }
-            else
+            if(!errors.Any())
                 this.Close();
         }
 

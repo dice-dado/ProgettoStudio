@@ -75,16 +75,10 @@ namespace ProgettoStudio
             this.ShowDialog();
         }
         private void SaveButton_Click(object sender, EventArgs e)
-        {
+        {         
+            mManager.OnSave();
 
-            var errors = mManager.OnSave();
-
-            if (errors.Count() > 0)
-            {
-                mDialogSerivice.ShowMessageBox(string.Join(Environment.NewLine, errors));
-            }
-            else
-                this.Close();
+            this.Close();
         }
         private void CancelButton_Click(object sender, EventArgs e)
         {

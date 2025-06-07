@@ -36,26 +36,16 @@ namespace UI_WpfApp
             switch (clickedItem)
             { 
                 case "Aree":
-                    FrmElenco frmElenco = new FrmElenco();
                     var frmArea = new FrmAree() as ICardForm;
+                    var frmElenco = new FrmElenco(frmArea);
+                    frmElenco.FormType = typeof(AreeEntity);
 
-                    frmElenco.Show();                    
-                    frmArea.ReadAllAsync<AreeEntity>(callback<AreeEntity>, ExcCallback);
-
-                    void callback<T>(IEnumerable<T> elenco)
-                    {                        
-                        frmElenco.Elenco.ItemsSource = elenco.Cast<AreeEntity>();                        
-                    }
-
-                    frmElenco.EditDelegate = (EntityBase entity) =>
-                    {
-                        frmArea.ShowModal((AreeEntity)entity);
-                    };
-
-
+                    frmElenco.Show();
                     break;
 
-                case "Aree (Sync)":     
+                case "Aree (Sync)":
+                    
+
                     break;
 
                 case "Anagrafiche":
@@ -64,18 +54,5 @@ namespace UI_WpfApp
 
         }
 
-
-
-
-        void Callback<T>(IEnumerable<T> result)
-        {
-            
-
-        }
-
-        void ExcCallback(Exception ex)
-        {
-            
-        }
     }
 }

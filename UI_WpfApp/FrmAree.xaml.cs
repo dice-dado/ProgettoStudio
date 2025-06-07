@@ -23,7 +23,7 @@ namespace UI_WpfApp
     /// Interaction logic for FrmAree.xaml
     /// </summary>
     public partial class FrmAree : Window, ICardForm
-    {
+    {        
         private readonly AreeManager mManager;
         private readonly IDialogService mDialogSerivice;
 
@@ -44,11 +44,27 @@ namespace UI_WpfApp
             mManager.ReadAllAsync<T>(callback, excCallback);
         }
 
-
         public void ShowModal(EntityBase entity)
-        {
-            throw new NotImplementedException();
+        {            
+            mManager.Init(entity);
+            this.DataContext = mManager;
+
+            ShowDialog();
         }
 
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            var errors = mManager.OnSave();
+
+            if (!errors.Any())
+                this.Close();
+        }
+
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            base.OnClosed(e);
+
+            mManager.Dispose();
+        }
     }
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Management.Instrumentation;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -117,8 +118,15 @@ namespace Manager
         {
             if (Entity.EntityState != EntityState.Unchanged)
             {
-                return Engine.Update(Entity);
+                var errors = Engine.Update(Entity);
+
+                if (errors.Count() > 0)
+                {
+                    mDialogService.ShowMessageBox(string.Join(Environment.NewLine, errors));
+                }
+                return errors;
             }
+
             else return new List<string>();
         }
          

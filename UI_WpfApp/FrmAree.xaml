@@ -8,10 +8,36 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="FrmAree">
 
-    <Grid>
-        
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
 
+            <TextBlock Text="Codice" Margin="5" VerticalAlignment="Center" Grid.Column="0"/>
+            <TextBox x:Name="txtCodice" Margin="5" Grid.Column="1" Text="{Binding Entity.Codice, PresentationTraceSources.TraceLevel=High}"/>
+
+            <TextBlock Text="Descrizione" Margin="5" VerticalAlignment="Center" Grid.Column="2"/>
+            <TextBox x:Name="txtDescrizione" Margin="5" Grid.Column="3" Text="{Binding Entity.Descrizione, PresentationTraceSources.TraceLevel=High}"/>
+        </Grid>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Button Content="Save" Width="75" Margin="10" Click="Save_Click"/>
+            <Button Content="Cancel" Width="75" Margin="10" Click="Close_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
