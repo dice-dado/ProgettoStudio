@@ -112,7 +112,14 @@ namespace Entity
 
         public void SetRiferimenti(List<RiferimentoEntity> riferimenti, bool unchanged)
         {
+            var entityState = this.EntityState;
+
             Riferimenti = riferimenti;
+
+            if (unchanged)
+            {
+                this.EntityState = entityState;
+            }
         }
 
         public AnagraficaEntity()

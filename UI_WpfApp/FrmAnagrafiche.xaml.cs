@@ -88,11 +88,18 @@ namespace UI_WpfApp
 
         private void Close_Click(object sender, RoutedEventArgs e)
         {
+
+            string res = (mManager.Action("Cancel").FirstOrDefault() ?? "");
+            if (res == "Yes" || res == string.Empty)
+                this.Close();
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
             base.OnClosed(e);
 
             mManager.Dispose();
         }
-
 
 
     }
