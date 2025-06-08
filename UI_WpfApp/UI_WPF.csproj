@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Helpers\BoolToVisibilityConverter.cs" />
     <Compile Include="Helpers\ObservableListWrapper.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Page Include="Controls\BusyIndicator.xaml">

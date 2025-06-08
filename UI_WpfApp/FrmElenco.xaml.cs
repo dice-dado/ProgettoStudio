@@ -3,8 +3,10 @@ using ProgettoStudio;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,27 +19,72 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DataGrid = System.Windows.Controls.DataGrid;
 
 namespace UI_WpfApp
 {
     /// <summary>
     /// Interaction logic for frmElenco.xaml
     /// </summary>
-    public partial class FrmElenco : Window
+    public partial class FrmElenco : Window, INotifyPropertyChanged
     {
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
         private ICardForm mCard; 
 
         public Type FormType { get; set; }
 
         public bool IsSync { get; set; }
 
+        public int SelectedIndex { get; set; }
+
+        public object SelectedItem { get; set; }
+        
+        private bool mIsBusy;
+        public bool IsBusy
+        {
+            get => mIsBusy;
+            set
+            {
+                if (mIsBusy != value)
+                {
+                    mIsBusy = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private IEnumerable<object> mElenco;
+        public IEnumerable<object> Elenco
+        {
+            get => mElenco;
+            set
+            {
+                if (mElenco != value)
+                {
+                    mElenco = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
 
         public FrmElenco(ICardForm card)
         {
             InitializeComponent();
-            Elenco.IsReadOnly = true;
 
             mCard = card;
+
+            DataContext = this;
+
         }
 
         protected override void OnContentRendered(EventArgs e)
@@ -45,7 +92,10 @@ namespace UI_WpfApp
                   
             base.OnContentRendered(e);
 
+            IsBusy = true;  
+
             InvokeCardGenericReadAll();
+            
         }
 
 
@@ -74,7 +124,9 @@ namespace UI_WpfApp
 
         void Callback<T>(IEnumerable<T> elenco)
         {
-            Elenco.ItemsSource = elenco.Cast<T>();
+            Elenco = elenco.Cast<object>();
+
+            IsBusy = false;
         }
 
         void ExcCallback(Exception ex)
@@ -97,7 +149,7 @@ namespace UI_WpfApp
 
         private void Elenco_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {            
-            if (Elenco.SelectedIndex >= 0 && Elenco.SelectedItem is EntityBase entity)
+            if (SelectedIndex >= 0 && SelectedItem is EntityBase entity)
             {
                 ICardForm newForm = (ICardForm)Activator.CreateInstance(mCard.GetType());
 

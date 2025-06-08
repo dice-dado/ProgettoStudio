@@ -21,7 +21,7 @@
 
         <ItemsControl.ItemTemplate>
             <DataTemplate>
-                <Button Content="{Binding}" Width="150" Height="80" Margin="10"  Click="MenuItemClick" />
+                <Button Content="{Binding}" Width="150" Height="80" Margin="10"   Click="MenuItemClick" />
             </DataTemplate>
         </ItemsControl.ItemTemplate>
     </ItemsControl>

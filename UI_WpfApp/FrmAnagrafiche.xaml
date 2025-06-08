@@ -4,12 +4,15 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:UI_WpfApp"
+      xmlns:controls="clr-namespace:UI_WpfApp.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="FrmAnagrafiche">
 
     <Grid Margin="10">
+
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -25,10 +28,10 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="ID" Margin="5" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtID" Grid.Column="1" Margin="5" Text="{Binding Entity.IdAnagrafica}"/>
+            <TextBox Grid.Column="1" Margin="5" Text="{Binding Entity.IdAnagrafica}"/>
 
             <TextBlock Text="Ragione Sociale" Grid.Column="2" Margin="5" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtRagione" Grid.Column="3" Margin="5" Text="{Binding Entity.RagioneSociale}"/>
+            <TextBox Grid.Column="3" Margin="5" Text="{Binding Entity.RagioneSociale}"/>
         </Grid>
 
         <Grid Grid.Row="1" Margin="0,0,0,10">
@@ -40,31 +43,33 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="Partita IVA" Margin="5" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtPIVA" Grid.Column="1" Margin="5" Text="{Binding Entity.PartitaIVA}"/>
+            <TextBox Grid.Column="1" Margin="5" Text="{Binding Entity.PartitaIVA}"/>
 
             <TextBlock Text="Indirizzo" Grid.Column="2" Margin="5" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtIndirizzo" Grid.Column="3" Margin="5"  Text="{Binding Entity.Indirizzo}"/>
+            <TextBox Grid.Column="3" Margin="5"  Text="{Binding Entity.Indirizzo}"/>
         </Grid>
 
         <Grid Grid.Row="2" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
             <TextBlock Text="Telefono" Margin="5" VerticalAlignment="Center"/>
-            <TextBox x:Name="txtTelefono" Grid.Column="1" Margin="5" Text="{Binding Entity.Telefono}"/>
+            <TextBox Grid.Column="1" Margin="5" Text="{Binding Entity.Telefono}"/>
         </Grid>
 
-        <DataGrid x:Name="dgRiferimenti"
-                  Grid.Row="2"
-                  Margin="0,60,0,10"
-                  Background="LightGray"
-                  AutoGenerateColumns="True"   />
+        <DataGrid x:Name="dgRiferimenti" Grid.Row="3" Margin="0,60,0,10" Background="LightGray" AutoGenerateColumns="True"   />
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
             <Button Content="Save" Width="75" Margin="10" Click="Save_Click"/>
-            <Button Content="Cancel" Width="75" Margin="10" Click="Close_Click"/> 
+            <Button Content="Cancel" Width="75" Margin="10" Click="Close_Click"/>
         </StackPanel>
+
     </Grid>
+
+    
+
 </Window>

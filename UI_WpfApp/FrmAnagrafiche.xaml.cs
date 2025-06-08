@@ -71,8 +71,6 @@ namespace UI_WpfApp
 
                 dgRiferimenti.ItemsSource = new ObservableListWrapper<RiferimentoEntity>(((AnagraficaEntity)mManager.Entity).Riferimenti);
 
-                txtID.IsReadOnly = false;
-
 
             }
 

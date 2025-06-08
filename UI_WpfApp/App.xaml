@@ -1,9 +1,10 @@
-﻿<Application x:Class="UI_WpfApp.App"
+﻿ <Application x:Class="UI_WpfApp.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:UI_WpfApp"
+             xmlns:helpers="clr-namespace:UI_WpfApp.Helpers"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <helpers:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Application.Resources>
 </Application>

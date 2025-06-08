@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UI_WpfApp"
+             xmlns:controls="clr-namespace:UI_WpfApp.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" 
              d:DesignWidth="800"
@@ -15,12 +16,23 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="9*" />
         </Grid.RowDefinitions>
 
-        <DataGrid x:Name="Elenco" Grid.Row="1" Grid.Column="0" Background="White" MouseDoubleClick="Elenco_MouseDoubleClick"/>
+        <controls:BusyIndicator Grid.Row="0" IsBusy="{Binding IsBusy, PresentationTraceSources.TraceLevel=High}">
+            <controls:BusyIndicator.InnerContent>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="500"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    
+                    <Button Grid.Row="0" Width="100" Height="50" HorizontalAlignment="Right" Margin="0,0,10,0" Click="Edit_Click">New</Button>
 
-        <Button Grid.Row="0" Width="100" Height="50" HorizontalAlignment="Right" Margin="0,0,10,0" Click="Edit_Click"> New </Button>
-            
+                    <DataGrid IsReadOnly="True" SelectedIndex="{Binding SelectedIndex}" SelectedItem="{Binding SelectedItem}" ItemsSource="{Binding Elenco}" Grid.Row="1" Grid.Column="0" Background="White" MouseDoubleClick="Elenco_MouseDoubleClick"/>
+
+                </Grid>
+            </controls:BusyIndicator.InnerContent>
+        </controls:BusyIndicator>
+                    
     </Grid>
 </Window>

@@ -39,10 +39,10 @@ namespace UI_WpfApp
             {
                
                 case "Aree":
-                    var frmArea = new FrmAree() as ICardForm;
+                    var frmArea = new FrmAree() as ICardForm;                    
                     frmElenco = new FrmElenco(frmArea);
                     frmElenco.FormType = typeof(AreeEntity);
-
+                    
                     frmElenco.Show();
                     break;
 
